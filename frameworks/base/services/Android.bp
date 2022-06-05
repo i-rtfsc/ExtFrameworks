@@ -1,0 +1,15 @@
+filegroup {
+    name: "jos_service_sources_aidl",
+    srcs: [
+        "core/java/**/*.aidl",
+    ],
+    path: "core/java",
+}
+
+filegroup {
+    name: "jos_service_sources_java",
+    srcs: [
+        "core/java/**/*.java",
+    ],
+    path: "core/java",
+}

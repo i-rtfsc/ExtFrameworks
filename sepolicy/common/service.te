@@ -1,0 +1,2 @@
+# for VariableRefreshRateService
+type vrr, system_server_service, service_manager_type;

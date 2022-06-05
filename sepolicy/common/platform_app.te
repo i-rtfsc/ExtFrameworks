@@ -1,0 +1,2 @@
+# for VariableRefreshRateService
+allow platform_app vrr:service_manager find;

@@ -1,0 +1,35 @@
+filegroup {
+    name: "jos_ext_services_sources_aidl",
+    srcs: [
+        "core/java/**/*.aidl",
+    ],
+    path: "core/java",
+}
+
+filegroup {
+    name: "jos_ext_services_sources_java",
+    srcs: [
+        "core/java/**/*.java",
+    ],
+    path: "core/java",
+}
+
+java_library {
+    name: "jos-services",
+    installable: true,
+    sdk_version: "core_platform",
+
+    libs: [
+        "framework",
+        "services",
+    ],
+
+    srcs: [
+        ":jos_ext_services_sources_aidl",
+        ":jos_ext_services_sources_java",
+    ],
+
+    aidl: {
+        local_include_dirs: [":jos_ext_services_sources_aidl"],
+    },
+}

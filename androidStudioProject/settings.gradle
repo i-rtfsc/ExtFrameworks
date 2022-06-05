@@ -1,0 +1,12 @@
+rootProject.name = "ExtFramework"
+
+include ':framework'
+include ':i-ext-framework'
+include ':services'
+include ':i-ext-services'
+include ':ext-framework'
+include ':ext-services'
+
+//include ':aosp-fwk'
+
+include ':test'

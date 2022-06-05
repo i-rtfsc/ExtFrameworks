@@ -1,0 +1,6 @@
+prebuilt_etc {
+    name: "jos-feature.xml",
+    system_ext_specific: true,
+    sub_dir: "permissions",
+    src: "jos-feature.xml",
+}

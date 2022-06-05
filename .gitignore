@@ -1,0 +1,39 @@
+# Project files and paths.
+.classpath
+.project
+
+*.iml
+**/*.iml
+
+.idea/
+**/.idea/
+**/**/.idea/
+
+# ignore gradle build paths.
+.gradle/
+**/.gradle/
+**/**/.gradle/
+
+.settings/
+**/.settings/
+**/**/.settings/
+
+build/
+**/build/
+**/**/build/
+
+*.cxx/
+**/*.cxx/
+**/**/*.cxx/
+
+local.properties
+**/local.properties
+**/**/local.properties
+
+# ignore OS X metadata
+.DS_Store
+**/.DS_Store
+**/*/.DS_Store
+
+__pycache__
+**/*/__pycache__

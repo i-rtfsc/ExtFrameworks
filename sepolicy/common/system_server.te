@@ -1,0 +1,2 @@
+# for VariableRefreshRateService
+allow system_server vrr:service_manager { add find };
