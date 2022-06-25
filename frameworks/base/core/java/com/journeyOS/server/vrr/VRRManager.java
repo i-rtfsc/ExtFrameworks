@@ -24,12 +24,10 @@ import android.util.Singleton;
 import system.ext.utils.JosLog;
 
 public class VRRManager {
-    private static final String TAG = VRRManager.class.getSimpleName();
-    private static final boolean DEBUG = true;
-
     public static final String VRR_TAG = "VRR";
     public static final String VRR_SERVICE = "vrr";
-
+    private static final String TAG = VRRManager.class.getSimpleName();
+    private static final boolean DEBUG = true;
     private static final Singleton<VRRManager> gDefault = new Singleton<VRRManager>() {
         @Override
         protected VRRManager create() {
@@ -68,7 +66,7 @@ public class VRRManager {
         return mService;
     }
 
-    public void setRefreshRatePolicy(int displayId, float rate, int policy, boolean statusOn)  {
+    public void setRefreshRatePolicy(int displayId, float rate, int policy, boolean statusOn) {
         JosLog.d(VRR_TAG, TAG, "setRefreshRatePolicy() called with: displayId = [" + displayId + "], rate = [" + rate + "], policy = [" + policy + "], statusOn = [" + statusOn + "]");
         IVariableRefreshRate service = getService();
         if (service != null) {

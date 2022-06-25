@@ -1,0 +1,107 @@
+ext {
+    //app版本
+    versionCode = 1
+    versionName = "v1.0"
+
+    //android开发版本配置
+    androidSdk = [
+            applicationId    : "com.android.extfwk",
+            buildToolsVersion: "30.0.3",
+            compileSdkVersion: 30,
+            targetSdkVersion : 30,
+            minSdkVersion    : 29,
+    ]
+
+    aospDir = "/home/solo/code/aosp"
+    extDir = "$aospDir/jos"
+
+
+    iExtFrameworkDir = [
+            "$extDir/frameworks/base/core/java/",
+    ]
+    iExtServiceDir = [
+            "$extDir/frameworks/base/services/core/java/",
+    ]
+
+    extFrameworkDir = [
+            "$extDir/frameworks/ext/core/java/",
+    ]
+    extServiceDir = [
+            "$extDir/frameworks/ext/services/core/java/",
+    ]
+
+    frameworkDir = [
+            "$aospDir/frameworks/base/core/java/",
+    ]
+
+    serviceDir = [
+            "$aospDir/frameworks/base/services/core/java/",
+            "$aospDir/frameworks/base/services/java/",
+    ]
+
+    //通过 frameworks/base/Android.bp的filegroup framework-non-updatable-sources
+    //找到大部分java文件目录，但还不是全部
+    frameworkFullDir = [
+            "$aospDir/frameworks/libs/modules-utils/java/",
+            "$aospDir/frameworks/base/apex/blobstore/framework/java",
+            "$aospDir/frameworks/base/core/java/",
+            "$aospDir/frameworks/base/drm/java/",
+            "$aospDir/frameworks/base/graphics/java/",
+            "$aospDir/frameworks/base/apex/jobscheduler/framework/java/",
+            "$aospDir/frameworks/base/keystore/java/",
+            "$aospDir/frameworks/base/identity/java/",
+            "$aospDir/frameworks/base/location/java/",
+            "$aospDir/frameworks/base/lowpan/java/",
+            "$aospDir/frameworks/base/media/mca/effect/java/",
+            "$aospDir/frameworks/base/media/mca/filterfw/java/",
+            "$aospDir/frameworks/base/media/mca/filterpacks/java/",
+            "$aospDir/frameworks/base/media/java/",
+            "$aospDir/frameworks/base/mms/java/",
+            "$aospDir/frameworks/base/omapi/java/",
+            "$aospDir/frameworks/base/opengl/java/",
+            "$aospDir/frameworks/base/rs/java/",
+            "$aospDir/frameworks/base/sax/java/",
+            "$aospDir/frameworks/base/telecomm/java/",
+            "$aospDir/frameworks/base/telephony/common/",
+            "$aospDir/frameworks/base/telephony/java/",
+            "$aospDir/frameworks/base/services/core/java/com/android/server/vcn/util/",
+            "$aospDir/frameworks/base/wifi/java/src/",
+    ]
+
+    //通过frameworks/base/services/Android.bp的filegroup services-non-updatable-sources
+    //找到大部分java文件目录，但还不是全部
+    serviceFullDir = [
+            "$aospDir/frameworks/base/services/accessibility/java/",
+            "$aospDir/frameworks/base/services/appprediction/java/",
+            "$aospDir/frameworks/base/services/appwidget/java/",
+            "$aospDir/frameworks/base/services/autofill/java/",
+            "$aospDir/frameworks/base/services/backup/java/",
+            "$aospDir/frameworks/base/services/backup/backuplib/java/",
+            "$aospDir/frameworks/base/services/companion/java/",
+            "$aospDir/frameworks/base/services/contentcapture/java/",
+            "$aospDir/frameworks/base/services/contentsuggestions/java/",
+            "$aospDir/frameworks/base/services/core/java/",
+            "$aospDir/frameworks/base/services/coverage/java/",
+            "$aospDir/frameworks/base/services/devicepolicy/java/",
+            "$aospDir/frameworks/base/services/java/",
+            "$aospDir/frameworks/base/services/midi/java/",
+            "$aospDir/frameworks/base/services/musicrecognition/java/",
+            "$aospDir/frameworks/base/services/net/java/",
+            "$aospDir/frameworks/base/services/people/java/",
+            "$aospDir/frameworks/base/services/print/java/",
+            "$aospDir/frameworks/base/services/profcollect/src/",
+            "$aospDir/frameworks/base/services/restrictions/java/",
+            "$aospDir/frameworks/base/services/restrictions/java/",
+            "$aospDir/frameworks/base/services/searchui/java/",
+            "$aospDir/frameworks/base/services/smartspace/java/",
+            "$aospDir/frameworks/base/services/systemcaptions/java/",
+            "$aospDir/frameworks/base/services/texttospeech/java/",
+            "$aospDir/frameworks/base/services/translation/java/",
+            "$aospDir/frameworks/base/services/usage/java/",
+            "$aospDir/frameworks/base/services/usb/java/",
+            "$aospDir/frameworks/base/services/uwb/java/",
+            "$aospDir/frameworks/base/services/voiceinteraction/java/",
+            "$aospDir/frameworks/base/services/wifi/java/",
+            "$aospDir/packages/modules/Bluetooth/service/java/",
+    ]
+}

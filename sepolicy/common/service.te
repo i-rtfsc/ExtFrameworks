@@ -1,2 +1,3 @@
 # for VariableRefreshRateService
-type vrr, system_server_service, service_manager_type;
+type refresh_rate_service, system_server_service, service_manager_type;
+type ums_service, system_api_service, service_manager_type;

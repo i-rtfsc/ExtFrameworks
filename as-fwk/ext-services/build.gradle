@@ -1,0 +1,14 @@
+ext {
+    BUILD_APPLICATION = false
+    BUILD_SRC = rootProject.ext.extServiceDir
+    BUILD_AIDL = rootProject.ext.extServiceDir
+}
+
+apply from: "${rootDir}/scripts/android-build.gradle"
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    compileOnly fileTree(include: ['*.jar'], dir: '../system_libs')
+    compileOnly project(':i-ext-framework')
+    compileOnly project(':i-ext-services')
+}

@@ -1,0 +1,2 @@
+# for VariableRefreshRateService
+allow system_app refresh_rate_service:service_manager find;

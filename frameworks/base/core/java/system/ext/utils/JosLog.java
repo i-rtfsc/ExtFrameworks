@@ -20,24 +20,15 @@ import android.util.Slog;
 
 public class JosLog {
     private static final String TAG = "JOS";
-    private static final boolean ENABLE_GLOBAL_TAG = false;
-
-    private static class Arg {
-        private String tag;
-        private String msg;
-        public Arg(String tag, String msg) {
-            this.tag = tag;
-            this.msg = msg;
-        }
-    }
+    private static final boolean ENABLE_GLOBAL_TAG = true;
 
     private static Arg parse(String... args) {
         String tag = null;
         if (ENABLE_GLOBAL_TAG) {
             tag = TAG;
         }
-        String msg = args[args.length -1];
-        for (int i = 0; i < args.length -1; i++) {
+        String msg = args[args.length - 1];
+        for (int i = 0; i < args.length - 1; i++) {
             if (tag == null) {
                 tag = args[i];
             } else {
@@ -71,6 +62,16 @@ public class JosLog {
     public static void e(String... args) {
         Arg arg = parse(args);
         Slog.e(arg.tag, arg.msg);
+    }
+
+    private static class Arg {
+        private String tag;
+        private String msg;
+
+        public Arg(String tag, String msg) {
+            this.tag = tag;
+            this.msg = msg;
+        }
     }
 
 }

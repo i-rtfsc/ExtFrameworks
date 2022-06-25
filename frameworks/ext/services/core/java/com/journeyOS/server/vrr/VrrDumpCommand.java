@@ -69,6 +69,7 @@ public class VrrDumpCommand {
         JosLog.i(VRRManager.VRR_TAG, TAG, "dump with refresh rate = [" + mArgRate + "]," +
                 " policy = [" + mArgPolicy + "]," +
                 " status = [" + mArgStatus + "]");
+        VrrSurfaceFlinger.getDefault().setRefreshRate(mArgRate);
     }
 
     private void dumpHelp(PrintWriter pw) {
@@ -80,4 +81,5 @@ public class VrrDumpCommand {
         pw.println("      arg3(int) status");
         //TODO
     }
+
 }

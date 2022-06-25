@@ -17,8 +17,9 @@
 package com.journeyOS.server.vrr;
 
 import android.content.Context;
-import android.os.ServiceManager;
 import android.os.RemoteException;
+import android.os.ServiceManager;
+import android.view.DisplayInfo;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -32,9 +33,12 @@ public class VariableRefreshRateService extends IVariableRefreshRate.Stub {
     private static final String TAG = VariableRefreshRateService.class.getSimpleName();
 
     private final Context mContext;
+    private final DisplayInfo mDisplayInfo;
 
-    public VariableRefreshRateService(Context context) {
+    public VariableRefreshRateService(Context context, DisplayInfo displayInfo) {
         this.mContext = context;
+        this.mDisplayInfo = displayInfo;
+        VrrSurfaceFlinger.getDefault().setDisplayInfo(displayInfo);
     }
 
     public void systemReady() {

@@ -1,3 +1,4 @@
+$(warning "-----> jos sepolicy ")
 SEPOLICY_JOS_PATH := jos/sepolicy
 
 COMMON_JOS_PRIVATE := $(SEPOLICY_JOS_PATH)/common/private

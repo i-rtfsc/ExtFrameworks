@@ -1,2 +1,2 @@
 # for VariableRefreshRateService
-vrr_sc       u:object_r:vrr:s0
+vrr       u:object_r:refresh_rate_service:s0

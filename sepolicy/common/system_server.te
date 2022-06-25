@@ -1,2 +1,2 @@
 # for VariableRefreshRateService
-allow system_server vrr:service_manager { add find };
+allow system_server refresh_rate_service:service_manager { add find };
