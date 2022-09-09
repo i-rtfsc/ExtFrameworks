@@ -1,4 +1,4 @@
-rootProject.name = "ExtApp"
+rootProject.name = "ExtFwk"
 
 include ':i-ext-framework'
 include ':i-ext-services'
@@ -6,7 +6,7 @@ include ':i-ext-services'
 include ':ext-framework'
 include ':ext-services'
 
-//include ':framework'
-//include ':services'
+include ':framework'
+include ':services'
 
 include ':test'

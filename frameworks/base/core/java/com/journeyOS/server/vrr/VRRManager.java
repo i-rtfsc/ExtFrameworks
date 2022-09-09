@@ -35,7 +35,7 @@ public class VRRManager {
         }
     };
 
-    private IVariableRefreshRate mService;
+    private IVariableRefreshRateService mService;
 
     private VRRManager() {
         getService();
@@ -45,14 +45,14 @@ public class VRRManager {
         return gDefault.get();
     }
 
-    private IVariableRefreshRate getService() {
+    private IVariableRefreshRateService getService() {
         if (mService == null) {
             try {
                 IBinder binder = ServiceManager.getService(VRR_SERVICE);
                 if (binder == null) {
                     JosLog.e(VRR_TAG, TAG, "can't get service binder");
                 }
-                mService = IVariableRefreshRate.Stub.asInterface(binder);
+                mService = IVariableRefreshRateService.Stub.asInterface(binder);
                 if (mService == null) {
                     JosLog.e(VRR_TAG, TAG, "can't get service interface");
                 }
@@ -68,7 +68,7 @@ public class VRRManager {
 
     public void setRefreshRatePolicy(int displayId, float rate, int policy, boolean statusOn) {
         JosLog.d(VRR_TAG, TAG, "setRefreshRatePolicy() called with: displayId = [" + displayId + "], rate = [" + rate + "], policy = [" + policy + "], statusOn = [" + statusOn + "]");
-        IVariableRefreshRate service = getService();
+        IVariableRefreshRateService service = getService();
         if (service != null) {
             try {
                 service.setRefreshRatePolicy(displayId, rate, policy, statusOn);

@@ -18,7 +18,6 @@ package system.ext.hook;
 
 import android.text.TextUtils;
 import android.util.ArrayMap;
-import android.util.Log;
 
 import system.ext.reflect.MethodUtils;
 import system.ext.utils.JosLog;

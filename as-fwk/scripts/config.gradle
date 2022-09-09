@@ -7,12 +7,14 @@ ext {
     androidSdk = [
             applicationId    : "com.android.extfwk",
             buildToolsVersion: "30.0.3",
-            compileSdkVersion: 30,
-            targetSdkVersion : 30,
-            minSdkVersion    : 29,
+            compileSdkVersion: 31,
+            targetSdkVersion : 31,
+            minSdkVersion    : 31,
     ]
 
+    //设置源码所在的目录
     aospDir = "/home/solo/code/aosp"
+    //设置扩展framework源码所在的目录
     extDir = "$aospDir/jos"
 
 

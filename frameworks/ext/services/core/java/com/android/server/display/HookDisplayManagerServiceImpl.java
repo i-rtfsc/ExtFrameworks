@@ -19,7 +19,6 @@ package com.android.server.display;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.RemoteException;
-import android.view.DisplayInfo;
 
 import com.journeyOS.server.vrr.VRRManager;
 import com.journeyOS.server.vrr.VariableRefreshRateService;
@@ -41,21 +40,14 @@ public class HookDisplayManagerServiceImpl implements HookDisplayManagerService 
     }
 
     @Override
-    public void systemReady(Context context, LogicalDisplayMapper logicalDisplayMapper) {
-        JosLog.i(TAG, "systemReady");
+    public void systemReady(Context context) {
+        JosLog.i(VRRManager.VRR_TAG, TAG, "systemReady");
         if (mVrr == null) {
-            LogicalDisplay display = logicalDisplayMapper.getDisplayLocked(0);
-            JosLog.i(VRRManager.VRR_TAG, TAG, "systemReady display = [" + display + "]");
-            DisplayInfo displayInfo = null;
-            if (display != null) {
-                displayInfo = display.getDisplayInfoLocked();
-            }
-            JosLog.i(VRRManager.VRR_TAG, TAG, "systemReady displayInfo = [" + displayInfo + "]");
-            this.mVrr = new VariableRefreshRateService(context, displayInfo);
+            this.mVrr = new VariableRefreshRateService(context);
             try {
                 mVrr.systemReady();
             } catch (Exception e) {
-                JosLog.e(TAG, "vrr publish fail = " + e.toString());
+                JosLog.e(VRRManager.VRR_TAG, TAG, "vrr publish fail = " + e.toString());
                 e.printStackTrace();
                 this.mVrr = null;
             }
@@ -64,7 +56,7 @@ public class HookDisplayManagerServiceImpl implements HookDisplayManagerService 
 
     @Override
     public void onStart() {
-        JosLog.i(TAG, "onStart");
+        JosLog.i(VRRManager.VRR_TAG, TAG, "onStart");
     }
 
     @Override

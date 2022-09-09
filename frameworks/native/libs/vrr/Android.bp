@@ -1,0 +1,25 @@
+cc_library_shared {
+    name: "libvrr",
+
+    cflags: [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-unused-parameter"
+    ],
+
+    srcs: [
+        "*.cpp",
+    ],
+
+    shared_libs: [
+        "libbinder",
+        "libcutils",
+        "libutils",
+        "liblog",
+    ],
+
+    export_include_dirs: ["include/vrr"],
+
+    compile_multilib: "both",
+}

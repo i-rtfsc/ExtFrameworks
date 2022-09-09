@@ -13,31 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.android.server.display;
-
-import android.content.Context;
-import android.os.Parcel;
-import android.os.RemoteException;
+package com.android.server.wm;
 
 import system.ext.hook.Inject;
 
-public interface HookDisplayManagerService {
+public interface HookWindowState {
 
-    static HookDisplayManagerService get() {
-        return (HookDisplayManagerService) Inject.getInstance().getInject(HookDisplayManagerService.class);
+    static HookWindowState get() {
+        return (HookWindowState) Inject.getInstance().getInject(HookWindowState.class, null, true);
     }
 
-    void init(DisplayManagerService displayManagerService);
-
-    default void onStart() {
+    default void setPreferredRefreshRate(float refreshRate) {
     }
 
-    default void systemReady(Context context) {
-    }
-
-    default boolean onTransact(int code, Parcel data, Parcel reply, int flags) throws RemoteException {
-        return false;
+    default float getPreferredRefreshRate() {
+        return 0;
     }
 
 }

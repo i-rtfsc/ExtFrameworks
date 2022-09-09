@@ -15,7 +15,9 @@
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.extfwk">
+    package="com.android.extfwk"
+    coreApp="true"
+    android:sharedUserId="android.uid.system">
 
     <application
         android:name=".ExtApplication"

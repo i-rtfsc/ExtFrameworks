@@ -21,13 +21,12 @@ import android.os.Parcel;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.util.Singleton;
-import android.view.Display;
-import android.view.DisplayInfo;
 
 import system.ext.utils.JosLog;
 
 public class VrrSurfaceFlinger {
     private static final String TAG = VrrSurfaceFlinger.class.getSimpleName();
+    private static final int TRANSACT_CODE_SET_REFRESH_RATE = 1035;
 
     private static final Singleton<VrrSurfaceFlinger> gDefault = new Singleton<VrrSurfaceFlinger>() {
         @Override
@@ -36,8 +35,6 @@ public class VrrSurfaceFlinger {
         }
     };
 
-    private DisplayInfo mDisplayInfo;
-
     public VrrSurfaceFlinger() {
     }
 
@@ -45,17 +42,8 @@ public class VrrSurfaceFlinger {
         return gDefault.get();
     }
 
-    public void setDisplayInfo(DisplayInfo displayInfo) {
-        mDisplayInfo = displayInfo;
-        JosLog.i(VRRManager.VRR_TAG, TAG, "set display info = [" + mDisplayInfo + "]");
-    }
-
     public void setRefreshRate(float refreshRate) {
-        JosLog.i(VRRManager.VRR_TAG, TAG, "set refresh rate, refreshRate = [" + refreshRate + "]");
-        //TODO
-        //float -> int
-        Display.Mode mode = mDisplayInfo.findDefaultModeByRefreshRate(refreshRate);
-        int modeId = mode.getModeId() - 1;
+        int modeId = VrrSurfaceControlProxy.getDefault().findDefaultModeIdByRefreshRate(refreshRate);
         JosLog.i(VRRManager.VRR_TAG, TAG, "set refresh rate, mode id = [" + modeId + "]");
         IBinder mSurfaceFlinger = ServiceManager.getService("SurfaceFlinger");
         Parcel data = Parcel.obtain();
@@ -64,8 +52,8 @@ public class VrrSurfaceFlinger {
         data.writeInt(modeId);
         try {
             try {
-                mSurfaceFlinger.transact(1035, data, null, 0);
-//                mSurfaceFlinger.transact(1035, data, reply, 0);
+                mSurfaceFlinger.transact(TRANSACT_CODE_SET_REFRESH_RATE, data, null, 0);
+//                mSurfaceFlinger.transact(TRANSACT_CODE_SET_REFRESH_RATE, data, reply, 0);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -75,4 +63,5 @@ public class VrrSurfaceFlinger {
             reply.recycle();
         }
     }
+
 }

@@ -16,6 +16,7 @@
 
 package com.journeyOS.server.vrr;
 
-interface IVariableRefreshRate {
+interface IVariableRefreshRateService {
     void setRefreshRatePolicy(int displayId, float rate, int policy, boolean statusOn);
+    void onFpsChange(int fps);
 }

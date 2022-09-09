@@ -19,7 +19,6 @@ package com.journeyOS.server.vrr;
 import android.content.Context;
 import android.os.RemoteException;
 import android.os.ServiceManager;
-import android.view.DisplayInfo;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -29,16 +28,13 @@ import system.ext.utils.JosLog;
 /**
  * VariableRefreshRateService
  */
-public class VariableRefreshRateService extends IVariableRefreshRate.Stub {
+public class VariableRefreshRateService extends IVariableRefreshRateService.Stub {
     private static final String TAG = VariableRefreshRateService.class.getSimpleName();
 
     private final Context mContext;
-    private final DisplayInfo mDisplayInfo;
 
-    public VariableRefreshRateService(Context context, DisplayInfo displayInfo) {
+    public VariableRefreshRateService(Context context) {
         this.mContext = context;
-        this.mDisplayInfo = displayInfo;
-        VrrSurfaceFlinger.getDefault().setDisplayInfo(displayInfo);
     }
 
     public void systemReady() {
@@ -54,6 +50,11 @@ public class VariableRefreshRateService extends IVariableRefreshRate.Stub {
     @Override
     public void setRefreshRatePolicy(int displayId, float rate, int policy, boolean statusOn) throws RemoteException {
         JosLog.d(VRRManager.VRR_TAG, TAG, "setRefreshRatePolicy() called with: displayId = [" + displayId + "], rate = [" + rate + "], policy = [" + policy + "], statusOn = [" + statusOn + "]");
+    }
+
+    @Override
+    public void onFpsChange(int fps) throws RemoteException {
+        JosLog.d(VRRManager.VRR_TAG, TAG, "onFpsChange() called with: fps = [" + fps + "]");
     }
 
 }
