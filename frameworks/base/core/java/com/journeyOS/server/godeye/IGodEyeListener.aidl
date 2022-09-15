@@ -13,21 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.server.wm;
 
-import system.ext.hook.Inject;
+package com.journeyOS.server.godeye;
 
-public interface HookWindowState {
+import com.journeyOS.server.godeye.Scene;
 
-    static HookWindowState get() {
-        return (HookWindowState) Inject.getInstance().getInject(HookWindowState.class, null, true);
-    }
-
-    default float getPreferredRefreshRate() {
-        return 0;
-    }
-
-    default void setPreferredRefreshRate(float refreshRate) {
-    }
-
+interface IGodEyeListener {
+    oneway void onSceneChanged(in Scene scene);
 }

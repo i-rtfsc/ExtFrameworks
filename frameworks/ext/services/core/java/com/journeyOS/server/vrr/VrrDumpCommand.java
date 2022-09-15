@@ -46,7 +46,7 @@ public class VrrDumpCommand {
 
         for (int position = 0; position < args.length; position++) {
             String opt = args[position];
-            JosLog.w(VRRManager.VRR_TAG, TAG, "position = [" + position + "]," + " cmd = [" + opt + "]");
+            JosLog.v(VRRManager.VRR_TAG, TAG, "position = [" + position + "]," + " cmd = [" + opt + "]");
             if ((H.equals(opt) || HELP.equals(opt))) {
                 dumpHelp(pw);
                 return;

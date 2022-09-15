@@ -37,4 +37,40 @@ public interface HookSystemConfig {
     default boolean supportBackgroundService(String packageName) {
         return false;
     }
+
+    default String getGodEyeAppType(String packageName) {
+        return "UNKNOWN";
+    }
+
+    default boolean isAlbum(String packageName) {
+        return false;
+    }
+
+    default boolean isBrowser(String packageName) {
+        return false;
+    }
+
+    default boolean isGame(String packageName) {
+        return false;
+    }
+
+    default boolean isIM(String packageName) {
+        return false;
+    }
+
+    default boolean isMusic(String packageName) {
+        return false;
+    }
+
+    default boolean isNews(String packageName) {
+        return false;
+    }
+
+    default boolean isReader(String packageName) {
+        return false;
+    }
+
+    default boolean isVideo(String packageName) {
+        return false;
+    }
 }

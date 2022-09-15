@@ -1,2 +1,4 @@
 # for VariableRefreshRateService
 vrr       u:object_r:refresh_rate_service:s0
+# for GodEyeService
+god_eye   u:object_r:god_eye_service:s0

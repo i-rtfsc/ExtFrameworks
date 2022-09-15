@@ -1,2 +1,4 @@
 # for VariableRefreshRateService
 allow platform_app refresh_rate_service:service_manager find;
+# for GodEyeService
+allow platform_app god_eye_service:service_manager find;

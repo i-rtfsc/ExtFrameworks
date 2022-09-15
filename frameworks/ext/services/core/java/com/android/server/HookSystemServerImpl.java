@@ -13,14 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.android.server;
 
 import android.content.Context;
+
+import com.journeyOS.server.godeye.GodEyeManager;
+import com.journeyOS.server.godeye.GodEyeService;
 
 import system.ext.utils.JosLog;
 
 public class HookSystemServerImpl implements HookSystemServer {
     private static final String TAG = HookSystemServerImpl.class.getSimpleName();
+
+    private Context mContext;
+
+    private GodEyeService mGodEyeService;
 
     public HookSystemServerImpl() {
     }
@@ -28,25 +36,32 @@ public class HookSystemServerImpl implements HookSystemServer {
     @Override
     public void initSystemServer(Context systemContext) {
         JosLog.i(TAG, "init system server");
-        JosLog.d(TAG, "initSystemServer hashCode = [" + this.hashCode() + "]");
+        mContext = systemContext;
     }
 
     @Override
     public void startBootstrapServices() {
         JosLog.i(TAG, "start bootstrap services");
-        JosLog.d(TAG, "startBootstrapServices hashCode = [" + this.hashCode() + "]");
     }
 
     @Override
     public void startCoreServices() {
         JosLog.i(TAG, "start core services");
-        JosLog.d(TAG, "startCoreServices hashCode = [" + this.hashCode() + "]");
+        if (mGodEyeService == null) {
+            mGodEyeService = new GodEyeService(mContext);
+            try {
+                mGodEyeService.systemReady();
+            } catch (Exception e) {
+                JosLog.e(GodEyeManager.GOD_EYE_TAG, TAG, "publish fail = " + e);
+                e.printStackTrace();
+                mGodEyeService = null;
+            }
+        }
     }
 
     @Override
     public void startOtherServices() {
         JosLog.i(TAG, "start other services");
-        JosLog.d(TAG, "startOtherServices hashCode = [" + this.hashCode() + "]");
     }
 
 }

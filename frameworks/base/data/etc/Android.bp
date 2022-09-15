@@ -4,3 +4,10 @@ prebuilt_etc {
     sub_dir: "permissions",
     src: "jos-feature.xml",
 }
+
+prebuilt_etc {
+    name: "jos-apps.xml",
+    system_ext_specific: true,
+    sub_dir: "sysconfig",
+    src: "jos-apps.xml",
+}

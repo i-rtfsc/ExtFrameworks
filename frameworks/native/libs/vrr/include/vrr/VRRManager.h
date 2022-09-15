@@ -52,6 +52,8 @@ namespace android {
 
         static VRRManager *getInstance();
 
+        void release();
+
         void setRefreshRatePolicy(int displayId, float rate, int policy, bool statusOn);
 
         void onFpsChange(int fps);
@@ -59,5 +61,23 @@ namespace android {
     };
 
 };
+
+
+#define DECLARE_VRR_VAR \
+    VRRManager* mVRRManager; \
+
+#define IMPL_VRR_CREATE() \
+    mVRRManager = new VRRManager(); \
+
+#define IMPL_VRR_RELEASE() \
+    if (mVRRManager != NULL) { \
+        delete mVRRManager; \
+        mVRRManager = NULL; \
+    } \
+
+#define IMPL_VRR_ON_FPS_CHANGE(fps) \
+    if (mVRRManager != NULL) { \
+        mVRRManager->onFpsChange(fps); \
+    } \
 
 #endif //ANDROID_VRR_MANAGER_H

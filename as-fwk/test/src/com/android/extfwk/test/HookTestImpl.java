@@ -1,11 +1,14 @@
 package com.android.extfwk.test;
 
 import android.content.Context;
+import android.os.RemoteException;
 
+import com.journeyOS.server.godeye.GodEyeManager;
+import com.journeyOS.server.godeye.GodEyeObserver;
+import com.journeyOS.server.godeye.Scene;
 import com.journeyOS.server.vrr.VRRManager;
 import com.journeyOS.server.vrr.VrrInputMonitor;
 import com.journeyOS.server.vrr.VrrSurfaceControlProxy;
-import com.journeyOS.server.vrr.VrrSurfaceFlinger;
 import com.journeyOS.server.vrr.VrrThread;
 
 import system.ext.utils.JosLog;
@@ -36,6 +39,13 @@ public class HookTestImpl implements HookTest {
 
         VrrSurfaceControlProxy.getDefault().getActiveDisplayModeId();
 
-        VrrSurfaceFlinger.getDefault().setRefreshRate(120.48f);
+        GodEyeManager.getDefault().subscribeObserver(new GodEyeObserver() {
+            @Override
+            public void onSceneChanged(Scene scene) throws RemoteException {
+                JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "onSceneChanged() called with: scene = [" + scene + "]");
+            }
+        });
+        GodEyeManager.getDefault().setFactor(GodEyeManager.SCENE_FACTOR_APP);
     }
+
 }

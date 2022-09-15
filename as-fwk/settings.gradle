@@ -6,7 +6,7 @@ include ':i-ext-services'
 include ':ext-framework'
 include ':ext-services'
 
-include ':framework'
-include ':services'
+//include ':framework'
+//include ':services'
 
 include ':test'

@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.server.wm;
 
-import system.ext.hook.Inject;
+#ifndef ANDROID_LOG_H
+#define ANDROID_LOG_H
 
-public interface HookWindowState {
+#include <log/log.h>
 
-    static HookWindowState get() {
-        return (HookWindowState) Inject.getInstance().getInject(HookWindowState.class, null, true);
-    }
+#define DEBUG true
 
-    default float getPreferredRefreshRate() {
-        return 0;
-    }
+#undef  LOG_TAG
+#define LOG_TAG        "JOS-VRR"
 
-    default void setPreferredRefreshRate(float refreshRate) {
-    }
+#define LOGV(...) __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG, __VA_ARGS__)
+#define LOGD(...) if(DEBUG) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
+#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
+#define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
+#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
 
-}
+#endif //ANDROID_LOG_H

@@ -14,7 +14,7 @@ jos/frameworks
 │   │       │   │   └── server
 │   │       │   └── journeyOS
 │   │       │       └── server
-│   │       │           └── vrr
+│   │       │           └── godeye
 │   │       └── system
 │   │           └── ext
 │   │               ├── hook
@@ -44,7 +44,7 @@ jos/frameworks
                     │       └── display
                     └── journeyOS
                         └── server
-                            └── vrr
+                            └── godeye
 ```
 如上为frameworks的基本目录结构。
 jos/frameworks/base下的目录结构跟frameworks/base完全一致，jos/frameworks/ext下的目录结构跟frameworks/base基本一致。

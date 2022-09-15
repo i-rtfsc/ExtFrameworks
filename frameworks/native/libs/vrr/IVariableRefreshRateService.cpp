@@ -42,9 +42,11 @@ namespace android {
         }
     };
 
-    IMPLEMENT_META_INTERFACE(VariableRefreshRateService, "com.journeyOS.server.vrr.IVariableRefreshRateService");
+    IMPLEMENT_META_INTERFACE(VariableRefreshRateService,
+    "com.journeyOS.server.godeye.IVariableRefreshRateService");
 
-    status_t BnVariableRefreshRateService::onTransact(uint32_t code, const Parcel &data, Parcel *reply, uint32_t flags) {
+    status_t
+    BnVariableRefreshRateService::onTransact(uint32_t code, const Parcel &data, Parcel *reply, uint32_t flags) {
         switch (code) {
             default:
                 return BBinder::onTransact(code, data, reply, flags);

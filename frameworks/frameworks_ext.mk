@@ -14,4 +14,5 @@ PRODUCT_SYSTEM_SERVER_JARS += jos-services
 
 # /system_ext/ect/permissions/jos-feature.xml
 PRODUCT_PACKAGES += \
-    jos-feature.xml
+    jos-feature.xml \
+    jos-apps.xml

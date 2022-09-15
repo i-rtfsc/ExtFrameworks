@@ -1,2 +1,4 @@
 # for VariableRefreshRateService
 allow system_server refresh_rate_service:service_manager { add find };
+# for GodEyeService
+allow system_server god_eye_service:service_manager { add find };

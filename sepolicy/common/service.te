@@ -1,3 +1,4 @@
 # for VariableRefreshRateService
 type refresh_rate_service, system_server_service, service_manager_type;
-type ums_service, system_api_service, service_manager_type;
+# for GodEyeService
+type god_eye_service, system_server_service, service_manager_type;

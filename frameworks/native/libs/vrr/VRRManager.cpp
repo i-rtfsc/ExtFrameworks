@@ -22,7 +22,7 @@
 #include "VRRManager.h"
 
 namespace android {
-    const String16 sServiceName("vrr");
+    const String16 sServiceName("godeye");
 
     VRRManager *VRRManager::sInstance = NULL;
 
@@ -38,6 +38,14 @@ namespace android {
         }
 
         return sInstance;
+    }
+
+    void VRRManager::release() {
+        LOGI("release");
+        if (sInstance != NULL) {
+            delete sInstance;
+            sInstance = NULL;
+        }
     }
 
     sp <IVariableRefreshRateService> VRRManager::getServicePolicy() {
@@ -76,7 +84,7 @@ namespace android {
     }
 
     void VRRManager::DeathNotifier::binderDied(const wp <IBinder> &who) {
-        //LOGE("listener for process vrr was died");
+        //LOGE("listener for process godeye was died");
         mService = nullptr;
     }
 };

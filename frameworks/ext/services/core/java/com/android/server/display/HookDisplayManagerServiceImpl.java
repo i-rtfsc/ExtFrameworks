@@ -47,7 +47,7 @@ public class HookDisplayManagerServiceImpl implements HookDisplayManagerService 
             try {
                 mVrr.systemReady();
             } catch (Exception e) {
-                JosLog.e(VRRManager.VRR_TAG, TAG, "vrr publish fail = " + e.toString());
+                JosLog.e(VRRManager.VRR_TAG, TAG, "vrr publish fail = " + e);
                 e.printStackTrace();
                 this.mVrr = null;
             }
