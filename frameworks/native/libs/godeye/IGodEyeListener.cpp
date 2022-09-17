@@ -25,11 +25,13 @@ namespace android {
         }
 
         void onSceneChanged(const Scene scene) {
-//            Parcel data, reply;
-//            data.writeInterfaceToken(IGodEyeListener::getInterfaceDescriptor());
-//            //TODO
-//            data.writeParcelable(scene);
-//            remote()->transact(ON_SCENE_CHANGED, data, &reply, IBinder::FLAG_ONEWAY);
+            Parcel data, reply;
+            data.writeInterfaceToken(IGodEyeListener::getInterfaceDescriptor());
+            data.writeInt64(scene.factorId);
+            data.writeString16(scene.packageName);
+            data.writeInt32(scene.type);
+            data.writeInt32(scene.status);
+            remote()->transact(ON_SCENE_CHANGED, data, &reply, IBinder::FLAG_ONEWAY);
         }
 
     };

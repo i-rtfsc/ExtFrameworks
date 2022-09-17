@@ -1,11 +1,25 @@
+/*
+ * Copyright (c) 2022 anqi.huang@outlook.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.android.extfwk.test;
 
 import android.content.Context;
-import android.os.RemoteException;
 
 import com.journeyOS.server.godeye.GodEyeManager;
-import com.journeyOS.server.godeye.GodEyeObserver;
-import com.journeyOS.server.godeye.Scene;
+import com.journeyOS.server.godeye.monitor.MonitorManager;
 import com.journeyOS.server.vrr.VRRManager;
 import com.journeyOS.server.vrr.VrrInputMonitor;
 import com.journeyOS.server.vrr.VrrSurfaceControlProxy;
@@ -39,13 +53,17 @@ public class HookTestImpl implements HookTest {
 
         VrrSurfaceControlProxy.getDefault().getActiveDisplayModeId();
 
-        GodEyeManager.getDefault().subscribeObserver(new GodEyeObserver() {
-            @Override
-            public void onSceneChanged(Scene scene) throws RemoteException {
-                JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "onSceneChanged() called with: scene = [" + scene + "]");
-            }
-        });
-        GodEyeManager.getDefault().setFactor(GodEyeManager.SCENE_FACTOR_APP);
+//        GodEyeManager.getDefault().subscribeObserver(new GodEyeObserver() {
+//            @Override
+//            public void onSceneChanged(Scene scene) throws RemoteException {
+//                JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "onSceneChanged() called with: scene = [" + scene + "]");
+//            }
+//        });
+//        GodEyeManager.getDefault().setFactor(GodEyeManager.SCENE_FACTOR_APP | GodEyeManager.SCENE_FACTOR_AUDIO);
+
+        MonitorManager.getInstance().init(context);
+        MonitorManager.getInstance().start(GodEyeManager.SCENE_FACTOR_APP);
+
     }
 
 }

@@ -28,11 +28,13 @@ import system.ext.utils.JosLog;
 public abstract class BaseMonitor {
     private static final String TAG = BaseMonitor.class.getSimpleName();
 
+    protected Context mContext;
     protected long mFactoryId;
     protected boolean mInit = false;
     protected boolean mStart = false;
 
-    public final synchronized boolean init(long factoryId) {
+    public final synchronized boolean init(Context context, long factoryId) {
+        mContext = context;
         mFactoryId = factoryId;
         if (mInit) {
             JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, this.getClass().getSimpleName() + " is already inited");
@@ -78,8 +80,8 @@ public abstract class BaseMonitor {
 
     protected abstract void onStop();
 
-    protected String getProcessName(Context context, int pid) {
-        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+    protected String getProcessName(int pid) {
+        ActivityManager activityManager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> apps = activityManager.getRunningAppProcesses();
         if (apps != null) {
             for (int i = 0; i < apps.size(); i++) {

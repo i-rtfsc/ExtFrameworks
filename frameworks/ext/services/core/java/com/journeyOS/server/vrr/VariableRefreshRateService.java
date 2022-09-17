@@ -44,7 +44,7 @@ public class VariableRefreshRateService extends IVariableRefreshRateService.Stub
 
     @Override
     protected void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
-        new VrrDumpCommand().dump(fd, pw, args);
+        new VrrDumpCommand(mContext).dump(fd, pw, args);
     }
 
     @Override

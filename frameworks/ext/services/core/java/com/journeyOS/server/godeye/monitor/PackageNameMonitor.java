@@ -16,6 +16,12 @@
 
 package com.journeyOS.server.godeye.monitor;
 
+import android.app.ActivityManager;
+import android.app.ActivityTaskManager;
+import android.app.TaskStackListener;
+import android.content.Context;
+import android.os.RemoteException;
+
 import com.android.server.HookSystemConfig;
 import com.journeyOS.server.godeye.GodEyeManager;
 import com.journeyOS.server.godeye.Scene;
@@ -24,7 +30,7 @@ import system.ext.utils.JosLog;
 
 public class PackageNameMonitor extends BaseMonitor {
     private static final String TAG = PackageNameMonitor.class.getSimpleName();
-
+    private static final boolean DEBUG = false;
     private static final String UNKNOWN = "unknown";
     private static final String ALBUM = "album";
     private static final String BROWSER = "browser";
@@ -36,6 +42,9 @@ public class PackageNameMonitor extends BaseMonitor {
     private static final String VIDEO = "video";
 
     private static volatile PackageNameMonitor sInstance = null;
+
+    private ActivityTaskManager mAtm = null;
+    private AppTaskStackListener mListener = null;
 
     private PackageNameMonitor() {
     }
@@ -57,10 +66,19 @@ public class PackageNameMonitor extends BaseMonitor {
 
     @Override
     protected void onStart() {
+        if (mAtm == null) {
+            mAtm = (ActivityTaskManager) mContext.getSystemService(Context.ACTIVITY_TASK_SERVICE);
+        }
+
+        if (mListener == null) {
+            mListener = new AppTaskStackListener();
+        }
+        mAtm.registerTaskStackListener(mListener);
     }
 
     @Override
     protected void onStop() {
+        mAtm.unregisterTaskStackListener(mListener);
     }
 
     public void activityResumed(String packageName) {
@@ -101,6 +119,27 @@ public class PackageNameMonitor extends BaseMonitor {
         }
 
         return type;
+    }
+
+    private class AppTaskStackListener extends TaskStackListener {
+        @Override
+        public void onTaskMovedToFront(ActivityManager.RunningTaskInfo taskInfo) throws RemoteException {
+            super.onTaskMovedToFront(taskInfo);
+            String packageName = taskInfo.topActivity.getPackageName();
+            String activity = taskInfo.topActivity.getClassName();
+            JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "on task moved to front, packageName = [" + packageName + "], activity = [" + activity + "]");
+        }
+
+        @Override
+        public void onTaskDescriptionChanged(ActivityManager.RunningTaskInfo taskInfo) throws RemoteException {
+            super.onTaskDescriptionChanged(taskInfo);
+            if (DEBUG) {
+                String packageName = taskInfo.topActivity.getPackageName();
+                String activity = taskInfo.topActivity.getClassName();
+                JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "on task description changed, packageName = [" + packageName + "], activity = [" + activity + "]");
+            }
+        }
+
     }
 
 }

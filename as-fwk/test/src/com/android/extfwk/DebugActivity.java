@@ -96,6 +96,7 @@ public class DebugActivity extends Activity {
     }
 
     private void setFps(float fps) {
+        //VrrDisplayModeDirector.getDefault().setRefreshRate(mContext, fps);
         Display.Mode[] modes = getDisplayModes();
         for (Display.Mode mode : modes) {
             JosLog.d(VRRManager.VRR_TAG, TAG, "setFps() mode id = [" + mode.getModeId() + "], refresh rate = [" + mode.getRefreshRate() + "]");

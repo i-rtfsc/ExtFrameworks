@@ -21,7 +21,6 @@ import android.os.RemoteException;
 import android.os.ServiceManager;
 
 import com.journeyOS.server.godeye.clients.ClientSession;
-import com.journeyOS.server.godeye.monitor.AudioMonitor;
 import com.journeyOS.server.godeye.monitor.MonitorManager;
 import com.journeyOS.server.godeye.monitor.PackageNameMonitor;
 
@@ -45,6 +44,7 @@ public class GodEyeService extends IGodEyeService.Stub implements MonitorManager
     public void systemReady() {
         JosLog.i(GodEyeManager.GOD_EYE_TAG, TAG, "systemReady");
         ServiceManager.addService(GodEyeManager.GOD_EYE_SERVICE, asBinder());
+        MonitorManager.getInstance().init(mContext);
         MonitorManager.getInstance().registerListener(this);
     }
 
@@ -112,13 +112,11 @@ public class GodEyeService extends IGodEyeService.Stub implements MonitorManager
     @Override
     public void onAudioStarted(int callingPid, int stream, long track) throws RemoteException {
         JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "on audio started, callingPid = [" + callingPid + "], stream = [" + stream + "], track = [" + track + "]");
-        AudioMonitor.getInstance().onMusicStarted(mContext, callingPid);
     }
 
     @Override
     public void onAudioStopped(int callingPid, int stream, long track) throws RemoteException {
         JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "on audio stopped, callingPid = [" + callingPid + "], stream = [" + stream + "], track = [" + track + "]");
-        AudioMonitor.getInstance().onMusicStopped(mContext, callingPid);
     }
 
     @Override

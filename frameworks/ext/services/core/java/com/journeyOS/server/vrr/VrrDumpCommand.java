@@ -16,6 +16,8 @@
 
 package com.journeyOS.server.vrr;
 
+import android.content.Context;
+
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
 
@@ -31,11 +33,14 @@ public class VrrDumpCommand {
     private static final int POSITION_POLICY = 1;
     private static final int POSITION_STATUS = 2;
 
+    private Context mContext;
+
     private float mArgRate = 60.0f;
     private String mArgPolicy = "system";
     private int mArgStatus = 0;
 
-    public VrrDumpCommand() {
+    public VrrDumpCommand(Context context) {
+        mContext = context;
     }
 
     public void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
@@ -69,7 +74,8 @@ public class VrrDumpCommand {
         JosLog.i(VRRManager.VRR_TAG, TAG, "dump with refresh rate = [" + mArgRate + "]," +
                 " policy = [" + mArgPolicy + "]," +
                 " status = [" + mArgStatus + "]");
-        VrrSurfaceFlinger.getDefault().setRefreshRate(mArgRate);
+        //VrrSurfaceFlinger.getDefault().setRefreshRate(mArgRate);
+        VrrDisplayModeDirector.getDefault().setRefreshRate(mContext, mArgRate);
     }
 
     private void dumpHelp(PrintWriter pw) {

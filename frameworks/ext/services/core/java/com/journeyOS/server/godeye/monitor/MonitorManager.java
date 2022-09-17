@@ -16,6 +16,8 @@
 
 package com.journeyOS.server.godeye.monitor;
 
+import android.content.Context;
+
 import com.journeyOS.server.godeye.GodEyeManager;
 import com.journeyOS.server.godeye.Scene;
 
@@ -34,6 +36,7 @@ public class MonitorManager {
     private final List<OnSceneListener> mListeners = new ArrayList<OnSceneListener>();
 
     private Scene mScene;
+    private Context mContext;
 
     private MonitorManager() {
     }
@@ -49,15 +52,48 @@ public class MonitorManager {
         return sInstance;
     }
 
+    public void init(Context context) {
+        mContext = context;
+    }
+
     protected boolean init(long factors) {
+        if ((factors & GodEyeManager.SCENE_FACTOR_APP) != 0) {
+            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_APP);
+            if (monitor == null) {
+                monitor = PackageNameMonitor.getInstance();
+                monitor.init(mContext, GodEyeManager.SCENE_FACTOR_APP);
+                mMonitors.put(GodEyeManager.SCENE_FACTOR_APP, monitor);
+            }
+        }
+
         if ((factors & GodEyeManager.SCENE_FACTOR_BRIGHTNESS) != 0) {
             BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_BRIGHTNESS);
             if (monitor == null) {
                 monitor = BrightnessMonitor.getInstance();
-                monitor.init(GodEyeManager.SCENE_FACTOR_BRIGHTNESS);
+                monitor.init(mContext, GodEyeManager.SCENE_FACTOR_BRIGHTNESS);
                 mMonitors.put(GodEyeManager.SCENE_FACTOR_BRIGHTNESS, monitor);
             }
         }
+
+        if ((factors & GodEyeManager.SCENE_FACTOR_AUDIO) != 0 ||
+                (factors & GodEyeManager.SCENE_FACTOR_VIDEO) != 0) {
+            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_AUDIO);
+            if (monitor == null) {
+                monitor = MediaMonitor.getInstance();
+                monitor.init(mContext, GodEyeManager.SCENE_FACTOR_AUDIO);
+                mMonitors.put(GodEyeManager.SCENE_FACTOR_AUDIO, monitor);
+            }
+        }
+
+        if ((factors & GodEyeManager.SCENE_FACTOR_CAMERA) != 0) {
+            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_CAMERA);
+            if (monitor == null) {
+                monitor = CameraMonitor.getInstance();
+                monitor.init(mContext, GodEyeManager.SCENE_FACTOR_CAMERA);
+                mMonitors.put(GodEyeManager.SCENE_FACTOR_CAMERA, monitor);
+            }
+        }
+
         return true;
     }
 
@@ -66,17 +102,52 @@ public class MonitorManager {
 
         boolean result = false;
 
+        if ((factors & GodEyeManager.SCENE_FACTOR_APP) != 0) {
+            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_APP);
+            result = monitor.start();
+        }
+
         if ((factors & GodEyeManager.SCENE_FACTOR_BRIGHTNESS) != 0) {
             BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_BRIGHTNESS);
             result = monitor.start();
         }
+
+        if ((factors & GodEyeManager.SCENE_FACTOR_AUDIO) != 0 ||
+                (factors & GodEyeManager.SCENE_FACTOR_VIDEO) != 0) {
+            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_AUDIO);
+            result = monitor.start();
+        }
+
+        if ((factors & GodEyeManager.SCENE_FACTOR_CAMERA) != 0) {
+            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_CAMERA);
+            result = monitor.start();
+        }
+
         return result;
     }
 
     public boolean stop(long factors) {
         boolean result = false;
+
+        if ((factors & GodEyeManager.SCENE_FACTOR_APP) != 0) {
+            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_APP);
+            result = monitor.stop();
+        }
+
         if ((factors & GodEyeManager.SCENE_FACTOR_BRIGHTNESS) != 0) {
             BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_BRIGHTNESS);
+            result = monitor.stop();
+        }
+
+        if ((factors & GodEyeManager.SCENE_FACTOR_AUDIO) != 0 ||
+                (factors & GodEyeManager.SCENE_FACTOR_VIDEO) != 0) {
+            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_AUDIO);
+            result = monitor.stop();
+        }
+
+        if ((factors & GodEyeManager.SCENE_FACTOR_CAMERA) != 0 ||
+                (factors & GodEyeManager.SCENE_FACTOR_CAMERA) != 0) {
+            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_CAMERA);
             result = monitor.stop();
         }
 
