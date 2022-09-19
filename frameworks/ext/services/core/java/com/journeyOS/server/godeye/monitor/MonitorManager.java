@@ -35,7 +35,7 @@ public class MonitorManager {
     private final ConcurrentHashMap<Long, BaseMonitor> mMonitors = new ConcurrentHashMap<>();
     private final List<OnSceneListener> mListeners = new ArrayList<OnSceneListener>();
 
-    private Scene mScene;
+    private Scene mScene = new Scene();
     private Context mContext;
 
     private MonitorManager() {
@@ -154,17 +154,24 @@ public class MonitorManager {
         return result;
     }
 
-    public synchronized void notifyResult(Scene scene) {
+    public void notifyResult(Scene scene) {
         notifyResult(scene, false);
     }
 
-    public synchronized void notifyResult(Scene scene, boolean fakeData) {
+    public void notifyResult(Scene scene, boolean fakeData) {
         if (!fakeData) {
             mScene = scene;
         }
+        synchronized (mScene) {
+            for (OnSceneListener listener : mListeners) {
+                listener.onChanged(scene);
+            }
+        }
+    }
 
-        for (OnSceneListener listener : mListeners) {
-            listener.onChanged(scene);
+    public Scene getPreviewScene() {
+        synchronized (mScene) {
+            return mScene;
         }
     }
 

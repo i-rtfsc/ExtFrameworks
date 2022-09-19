@@ -86,7 +86,6 @@ public class GodEyeService extends IGodEyeService.Stub implements MonitorManager
     @Override
     public void activityResumed(String packageName) throws RemoteException {
         JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "activity resumed, packageName = [" + packageName + "]");
-        PackageNameMonitor.getInstance().activityResumed(packageName);
     }
 
     @Override

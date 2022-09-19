@@ -19,7 +19,9 @@ package com.journeyOS.server.godeye.monitor;
 import android.app.ActivityManager;
 import android.content.Context;
 
+import com.android.server.HookSystemConfig;
 import com.journeyOS.server.godeye.GodEyeManager;
+import com.journeyOS.server.godeye.Scene;
 
 import java.util.List;
 
@@ -96,5 +98,49 @@ public abstract class BaseMonitor {
             }
         }
         return null;
+    }
+
+    public static int convertApp(String packageName) {
+        int type = Scene.App.DEFAULT;
+        String appType = HookSystemConfig.get().getGodEyeAppType(packageName);
+        switch (appType) {
+            case PackageNameMonitor.ALBUM:
+                type = Scene.App.ALBUM;
+                break;
+            case PackageNameMonitor.BROWSER:
+                type = Scene.App.BROWSER;
+                break;
+            case PackageNameMonitor.GAME:
+                type = Scene.App.GAME;
+                break;
+            case PackageNameMonitor.IM:
+                type = Scene.App.IM;
+                break;
+            case PackageNameMonitor.MUSIC:
+                type = Scene.App.MUSIC;
+                break;
+            case PackageNameMonitor.NEWS:
+                type = Scene.App.NEWS;
+                break;
+            case PackageNameMonitor.READER:
+                type = Scene.App.READER;
+                break;
+            case PackageNameMonitor.VIDEO:
+                type = Scene.App.VIDEO;
+                break;
+            default:
+                type = Scene.App.DEFAULT;
+                break;
+        }
+
+        return type;
+    }
+
+    protected Scene getPreviewScene() {
+        return MonitorManager.getInstance().getPreviewScene();
+    }
+
+    protected void notifyResult(Scene scene) {
+        MonitorManager.getInstance().notifyResult(scene);
     }
 }

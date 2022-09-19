@@ -17,8 +17,11 @@
 package com.android.extfwk.test;
 
 import android.content.Context;
+import android.os.RemoteException;
 
 import com.journeyOS.server.godeye.GodEyeManager;
+import com.journeyOS.server.godeye.GodEyeObserver;
+import com.journeyOS.server.godeye.Scene;
 import com.journeyOS.server.godeye.monitor.MonitorManager;
 import com.journeyOS.server.vrr.VRRManager;
 import com.journeyOS.server.vrr.VrrInputMonitor;
@@ -53,17 +56,22 @@ public class HookTestImpl implements HookTest {
 
         VrrSurfaceControlProxy.getDefault().getActiveDisplayModeId();
 
-//        GodEyeManager.getDefault().subscribeObserver(new GodEyeObserver() {
-//            @Override
-//            public void onSceneChanged(Scene scene) throws RemoteException {
-//                JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "onSceneChanged() called with: scene = [" + scene + "]");
-//            }
-//        });
-//        GodEyeManager.getDefault().setFactor(GodEyeManager.SCENE_FACTOR_APP | GodEyeManager.SCENE_FACTOR_AUDIO);
+        long factors = GodEyeManager.SCENE_FACTOR_APP
+                | GodEyeManager.SCENE_FACTOR_CAMERA
+                | GodEyeManager.SCENE_FACTOR_AUDIO
+                | GodEyeManager.SCENE_FACTOR_VIDEO
+                | GodEyeManager.SCENE_FACTOR_BRIGHTNESS;
 
-        MonitorManager.getInstance().init(context);
-        MonitorManager.getInstance().start(GodEyeManager.SCENE_FACTOR_APP);
+        GodEyeManager.getDefault().subscribeObserver(new GodEyeObserver() {
+            @Override
+            public void onSceneChanged(Scene scene) throws RemoteException {
+                JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "onSceneChanged() called with: scene = [" + scene + "]");
+            }
+        });
+        GodEyeManager.getDefault().setFactor(factors);
 
+//        MonitorManager.getInstance().init(context);
+//        MonitorManager.getInstance().start(factors);
     }
 
 }

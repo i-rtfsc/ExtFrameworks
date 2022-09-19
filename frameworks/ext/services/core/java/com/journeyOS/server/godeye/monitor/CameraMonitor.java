@@ -23,6 +23,7 @@ import android.os.RemoteException;
 import android.os.ServiceManager;
 
 import com.journeyOS.server.godeye.GodEyeManager;
+import com.journeyOS.server.godeye.Scene;
 
 import system.ext.utils.JosLog;
 
@@ -88,16 +89,14 @@ public class CameraMonitor extends BaseMonitor {
         public void onTorchStatusChanged(int status, String cameraId)
                 throws RemoteException {
             if (DEBUG) {
-                JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, String.format("Camera %s has torch status changed to 0x%x",
-                        cameraId, status));
+                JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, String.format("Camera %s has torch status changed to 0x%x", cameraId, status));
             }
         }
 
         @Override
         public void onTorchStrengthLevelChanged(String cameraId, int torchStrength) {
             if (DEBUG) {
-                JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, String.format("Camera " + cameraId + " torch strength level changed to "
-                        + torchStrength));
+                JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, String.format("Camera " + cameraId + " torch strength level changed to " + torchStrength));
             }
         }
 
@@ -105,8 +104,7 @@ public class CameraMonitor extends BaseMonitor {
         public void onPhysicalCameraStatusChanged(int status, String cameraId,
                                                   String physicalCameraId) throws RemoteException {
             if (DEBUG) {
-                JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, String.format("Camera %s : %s has status changed to 0x%x",
-                        cameraId, physicalCameraId, status));
+                JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, String.format("Camera %s : %s has status changed to 0x%x", cameraId, physicalCameraId, status));
             }
         }
 
@@ -119,13 +117,22 @@ public class CameraMonitor extends BaseMonitor {
 
         @Override
         public void onCameraOpened(String cameraId, String clientPackageName) {
-            JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, String.format("Camera %s is opened by client package %s",
-                    cameraId, clientPackageName));
+            JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, String.format("Camera %s is opened by client package %s", cameraId, clientPackageName));
+
+            Scene scene = getPreviewScene();
+            scene.setFactorId(GodEyeManager.SCENE_FACTOR_CAMERA);
+            scene.setStatus(Scene.State.ON);
+            notifyResult(scene);
         }
 
         @Override
         public void onCameraClosed(String cameraId) {
             JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, String.format("Camera %s is closed", cameraId));
+
+            Scene scene = getPreviewScene();
+            scene.setFactorId(GodEyeManager.SCENE_FACTOR_CAMERA);
+            scene.setStatus(Scene.State.OFF);
+            notifyResult(scene);
         }
     }
 }

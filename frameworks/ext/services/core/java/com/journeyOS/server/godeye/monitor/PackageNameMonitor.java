@@ -22,7 +22,6 @@ import android.app.TaskStackListener;
 import android.content.Context;
 import android.os.RemoteException;
 
-import com.android.server.HookSystemConfig;
 import com.journeyOS.server.godeye.GodEyeManager;
 import com.journeyOS.server.godeye.Scene;
 
@@ -31,15 +30,16 @@ import system.ext.utils.JosLog;
 public class PackageNameMonitor extends BaseMonitor {
     private static final String TAG = PackageNameMonitor.class.getSimpleName();
     private static final boolean DEBUG = false;
-    private static final String UNKNOWN = "unknown";
-    private static final String ALBUM = "album";
-    private static final String BROWSER = "browser";
-    private static final String GAME = "game";
-    private static final String IM = "im";
-    private static final String MUSIC = "music";
-    private static final String NEWS = "news";
-    private static final String READER = "reader";
-    private static final String VIDEO = "video";
+
+    public static final String UNKNOWN = "unknown";
+    public static final String ALBUM = "album";
+    public static final String BROWSER = "browser";
+    public static final String GAME = "game";
+    public static final String IM = "im";
+    public static final String MUSIC = "music";
+    public static final String NEWS = "news";
+    public static final String READER = "reader";
+    public static final String VIDEO = "video";
 
     private static volatile PackageNameMonitor sInstance = null;
 
@@ -81,46 +81,6 @@ public class PackageNameMonitor extends BaseMonitor {
         mAtm.unregisterTaskStackListener(mListener);
     }
 
-    public void activityResumed(String packageName) {
-        JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "activity resumed, packageName = [" + packageName + "]");
-    }
-
-    public int convertType(String packageName) {
-        int type = Scene.App.UNKNOWN.ordinal;
-        String appType = HookSystemConfig.get().getGodEyeAppType(packageName);
-        switch (appType) {
-            case ALBUM:
-                type = Scene.App.ALBUM.ordinal;
-                break;
-            case BROWSER:
-                type = Scene.App.BROWSER.ordinal;
-                break;
-            case GAME:
-                type = Scene.App.GAME.ordinal;
-                break;
-            case IM:
-                type = Scene.App.IM.ordinal;
-                break;
-            case MUSIC:
-                type = Scene.App.MUSIC.ordinal;
-                break;
-            case NEWS:
-                type = Scene.App.NEWS.ordinal;
-                break;
-            case READER:
-                type = Scene.App.READER.ordinal;
-                break;
-            case VIDEO:
-                type = Scene.App.VIDEO.ordinal;
-                break;
-            default:
-                type = Scene.App.UNKNOWN.ordinal;
-                break;
-        }
-
-        return type;
-    }
-
     private class AppTaskStackListener extends TaskStackListener {
         @Override
         public void onTaskMovedToFront(ActivityManager.RunningTaskInfo taskInfo) throws RemoteException {
@@ -128,6 +88,12 @@ public class PackageNameMonitor extends BaseMonitor {
             String packageName = taskInfo.topActivity.getPackageName();
             String activity = taskInfo.topActivity.getClassName();
             JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "on task moved to front, packageName = [" + packageName + "], activity = [" + activity + "]");
+
+            Scene scene = getPreviewScene();
+            scene.setFactorId(GodEyeManager.SCENE_FACTOR_APP);
+            scene.setPackageName(packageName);
+            scene.setApp(convertApp(packageName));
+            notifyResult(scene);
         }
 
         @Override
@@ -139,7 +105,6 @@ public class PackageNameMonitor extends BaseMonitor {
                 JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "on task description changed, packageName = [" + packageName + "], activity = [" + activity + "]");
             }
         }
-
     }
 
 }

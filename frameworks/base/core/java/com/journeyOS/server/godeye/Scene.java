@@ -33,28 +33,30 @@ public class Scene implements Parcelable {
         }
     };
 
-    private final long factorId;
+    private long factorId;
     private String packageName = "";
-    private int type;
+    private int app;
     private int status;
+    private String value;
 
-    public Scene(long factorId) {
-        this.factorId = factorId;
+    public Scene() {
     }
 
     protected Scene(Parcel in) {
         factorId = in.readLong();
         packageName = in.readString();
-        type = in.readInt();
+        app = in.readInt();
         status = in.readInt();
+        value = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(factorId);
         dest.writeString(packageName);
-        dest.writeInt(type);
+        dest.writeInt(app);
         dest.writeInt(status);
+        dest.writeString(value);
     }
 
     @Override
@@ -62,59 +64,86 @@ public class Scene implements Parcelable {
         return 0;
     }
 
-    public long getFactorId() {
-        return factorId;
+    public void setFactorId(long factorId) {
+        this.factorId = factorId;
     }
 
-    public String getPackageName() {
-        return packageName;
+    public long getFactorId() {
+        return factorId;
     }
 
     public void setPackageName(String packageName) {
         this.packageName = packageName;
     }
 
-    public int getType() {
-        return type;
+    public String getPackageName() {
+        return packageName;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setApp(int app) {
+        this.app = app;
     }
 
-    public int getStatus() {
-        return status;
+    public int getApp() {
+        return app;
     }
 
     public void setStatus(int status) {
         this.status = status;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getPlayer() {
+        if (GodEyeManager.SCENE_FACTOR_VIDEO == factorId || GodEyeManager.SCENE_FACTOR_AUDIO == factorId) {
+            return value;
+        }
+
+        return "";
+    }
+
+    public int getBrightness() {
+        if (GodEyeManager.SCENE_FACTOR_BRIGHTNESS == factorId) {
+            return Integer.valueOf(value);
+        }
+
+        return -1;
+    }
+
+
     @Override
     public String toString() {
         return "Scene{" +
                 "factorId=" + factorId +
                 ", packageName='" + packageName + '\'' +
-                ", type=" + type +
+                ", app=" + app +
                 ", status=" + status +
+                ", value=" + value +
                 '}';
     }
 
-    public static enum App {
-        UNKNOWN(0),
-        ALBUM(1),
-        BROWSER(2),
-        GAME(3),
-        IM(4),
-        MUSIC(5),
-        NEWS(6),
-        READER(7),
-        VIDEO(8);
-
-        public final int ordinal;
-
-        private App(int ordinal) {
-            this.ordinal = ordinal;
-        }
+    public static class App {
+        public static final int DEFAULT = 0;
+        public static final int ALBUM = 1;
+        public static final int BROWSER = 2;
+        public static final int GAME = 3;
+        public static final int IM = 4;
+        public static final int MUSIC = 5;
+        public static final int NEWS = 6;
+        public static final int READER = 7;
+        public static final int VIDEO = 8;
     }
+
+    public static class State {
+        public static final int UNKNOWN = 1;
+        public static final int ON = 1;
+        public static final int OFF = 0;
+    }
+
 }

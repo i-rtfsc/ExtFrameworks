@@ -16,19 +16,23 @@
 
 package com.journeyOS.server.godeye.monitor;
 
+import android.app.ActivityManager;
+import android.app.IActivityManager;
+import android.app.IProcessObserver;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.AudioPlaybackConfiguration;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.RemoteException;
 import android.util.ArrayMap;
 
-import androidx.annotation.NonNull;
-
-import com.android.server.HookSystemConfig;
 import com.journeyOS.server.godeye.GodEyeManager;
+import com.journeyOS.server.godeye.GodEyeThread;
+import com.journeyOS.server.godeye.Scene;
 
+import java.util.HashMap;
 import java.util.List;
 
 import system.ext.utils.JosLog;
@@ -43,10 +47,11 @@ public class MediaMonitor extends BaseMonitor {
     private AudioManagerPlaybackListener mAudioManagerPlaybackListener = null;
     private MessageHandler mH;
 
-    private PlayConfig mPrevNotifyPlayConfig = null;
+    private IActivityManager mActivityManager;
+    private final HashMap<Integer, PlayConfig> mPlayers = new HashMap<Integer, PlayConfig>();
 
     private MediaMonitor() {
-        mH = new MessageHandler(Looper.myLooper());
+        mH = new MessageHandler(GodEyeThread.getDefault().getLooper());
     }
 
     public static MediaMonitor getInstance() {
@@ -73,32 +78,126 @@ public class MediaMonitor extends BaseMonitor {
             mAudioManagerPlaybackListener = new AudioManagerPlaybackListener();
         }
         mAm.registerAudioPlaybackCallback(mAudioManagerPlaybackListener, null);
+
+        try {
+            if (mActivityManager == null) {
+                mActivityManager = ActivityManager.getService();
+            }
+            mActivityManager.registerProcessObserver(mProcessObserver);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void onStop() {
         mAm.unregisterAudioPlaybackCallback(mAudioManagerPlaybackListener);
+
+        try {
+            if (mActivityManager != null) {
+                mActivityManager.unregisterProcessObserver(mProcessObserver);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     private void handlerActive(PlayConfig playConfig) {
-        JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "handler active, config = [" + playConfig + "]");
-        if (playConfig.equals(mPrevNotifyPlayConfig)) {
-            JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "has been notify, don't need notify again");
+        PlayConfig pevNotifyPlayConfig = mPlayers.get(playConfig.clientPid);
+        if (playConfig.equals(pevNotifyPlayConfig)) {
+            if (DEBUG) {
+                JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "has been notify, don't need notify again");
+            }
             return;
         }
-        //TODO
-        mPrevNotifyPlayConfig = playConfig;
+
+        JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "handler active, config = [" + playConfig + "]");
+
+        mPlayers.put(playConfig.clientPid, playConfig);
+
+        Scene scene = getPreviewScene();
+        scene.setStatus(Scene.State.ON);
+        scene.setValue(playConfig.packageName);
+
+//        if (!playConfig.packageName.equals(scene.getPackageName())) {
+//            JosLog.w(GodEyeManager.GOD_EYE_TAG, TAG, "player on background, don't need notify...");
+//            return;
+//        }
+
+        int app = convertApp(playConfig.packageName);
+        if (Scene.App.VIDEO == app) {
+            scene.setFactorId(GodEyeManager.SCENE_FACTOR_VIDEO);
+        } else if (Scene.App.MUSIC == app) {
+            scene.setFactorId(GodEyeManager.SCENE_FACTOR_AUDIO);
+        } else {
+            JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "unknown app...");
+            scene.setFactorId(GodEyeManager.SCENE_FACTOR_AUDIO);
+        }
+
+        notifyResult(scene);
     }
 
     private void handlerInactive(PlayConfig playConfig) {
-        JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "handler inactive, config = [" + playConfig + "]");
-        if (playConfig.equals(mPrevNotifyPlayConfig)) {
-            JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "has been notify, don't need notify again");
+        PlayConfig pevNotifyPlayConfig = mPlayers.get(playConfig.clientPid);
+        if (playConfig.equals(pevNotifyPlayConfig)) {
+            if (DEBUG) {
+                JosLog.w(GodEyeManager.GOD_EYE_TAG, TAG, "has been notify, don't need notify again");
+            }
             return;
         }
-        //TODO
-        mPrevNotifyPlayConfig = playConfig;
+
+        JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "handler inactive, config = [" + playConfig + "]");
+
+        mPlayers.put(playConfig.clientPid, playConfig);
+
+        Scene scene = getPreviewScene();
+        scene.setStatus(Scene.State.OFF);
+        scene.setValue(playConfig.packageName);
+
+//        if (!playConfig.packageName.equals(scene.getPackageName())) {
+//            JosLog.w(GodEyeManager.GOD_EYE_TAG, TAG, "player on background, don't need notify.");
+//            return;
+//        }
+
+        int app = convertApp(playConfig.packageName);
+        if (Scene.App.VIDEO == app) {
+            scene.setFactorId(GodEyeManager.SCENE_FACTOR_VIDEO);
+        } else if (Scene.App.MUSIC == app) {
+            scene.setFactorId(GodEyeManager.SCENE_FACTOR_AUDIO);
+        } else {
+            JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "unknown app...");
+            scene.setFactorId(GodEyeManager.SCENE_FACTOR_AUDIO);
+        }
+
+        notifyResult(scene);
     }
+
+    private final IProcessObserver.Stub mProcessObserver = new IProcessObserver.Stub() {
+        @Override
+        public void onForegroundActivitiesChanged(int pid, int uid, boolean foregroundActivities)
+                throws RemoteException {
+            if (DEBUG) {
+                JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "on foreground activities changed, pid = [" + pid + "], package name = [" + getProcessName(pid) + "]");
+            }
+        }
+
+        @Override
+        public void onForegroundServicesChanged(int pid, int uid, int serviceTypes)
+                throws RemoteException {
+            if (DEBUG) {
+                JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "on foreground services changed, pid = [" + pid + "], package name = [" + getProcessName(pid) + "]");
+            }
+        }
+
+        @Override
+        public void onProcessDied(int pid, int uid)
+                throws RemoteException {
+            JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "on process died, pid = [" + pid + "], package name = [" + getProcessName(pid) + "]");
+            if (mPlayers.containsKey(pid)) {
+                mPlayers.remove(pid);
+            }
+        }
+    };
 
     private class MessageHandler extends Handler {
         public static final long DELAYED = 1000;
@@ -106,7 +205,7 @@ public class MediaMonitor extends BaseMonitor {
         public static final int MSG_ACTIVE = 1;
         public static final int MSG_INACTIVE = 2;
 
-        public MessageHandler(@NonNull Looper looper) {
+        public MessageHandler(Looper looper) {
             super(looper);
         }
 
@@ -126,7 +225,7 @@ public class MediaMonitor extends BaseMonitor {
     }
 
     private class PlayConfig {
-        int playerState ;
+        int playerState;
         int clientPid;
         String packageName;
         boolean isMusicActive;

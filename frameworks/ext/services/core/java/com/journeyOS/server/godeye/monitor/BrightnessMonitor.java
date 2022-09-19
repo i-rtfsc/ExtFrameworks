@@ -62,7 +62,6 @@ public class BrightnessMonitor extends BaseMonitor {
         }
     }
 
-
     private class BrightnessFileObserver extends FileObserver {
         private static final String BRIGHTNESS_FILE = "/sys/class/backlight/panel0-backlight/brightness";
 
@@ -72,7 +71,7 @@ public class BrightnessMonitor extends BaseMonitor {
 
         @Override
         public void onEvent(int event, String path) {
-            JosLog.w(GodEyeManager.GOD_EYE_TAG, TAG, "path " + path);
+            JosLog.w(GodEyeManager.GOD_EYE_TAG, TAG, "event = [" + event + "], path = [" + path + "]");
         }
     }
 

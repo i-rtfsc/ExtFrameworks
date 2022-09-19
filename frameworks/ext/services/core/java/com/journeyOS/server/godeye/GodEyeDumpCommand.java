@@ -16,8 +16,8 @@
 
 package com.journeyOS.server.godeye;
 
+import com.journeyOS.server.godeye.monitor.BaseMonitor;
 import com.journeyOS.server.godeye.monitor.MonitorManager;
-import com.journeyOS.server.godeye.monitor.PackageNameMonitor;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -92,9 +92,10 @@ public class GodEyeDumpCommand {
     }
 
     private void test() {
-        Scene scene = new Scene(mArgFactorId);
+        Scene scene = new Scene();
+        scene.setFactorId(mArgFactorId);
         scene.setPackageName(mArgPackageName);
-        scene.setType(PackageNameMonitor.getInstance().convertType(mArgPackageName));
+        scene.setApp(BaseMonitor.convertApp(mArgPackageName));
         scene.setStatus(mArgStatus);
         MonitorManager.getInstance().notifyResult(scene, true);
     }
