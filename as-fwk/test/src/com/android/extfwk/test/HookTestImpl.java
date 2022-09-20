@@ -53,14 +53,14 @@ public class HookTestImpl implements HookTest {
             }
         });
 
-
         VrrSurfaceControlProxy.getDefault().getActiveDisplayModeId();
 
         long factors = GodEyeManager.SCENE_FACTOR_APP
                 | GodEyeManager.SCENE_FACTOR_CAMERA
-                | GodEyeManager.SCENE_FACTOR_AUDIO
                 | GodEyeManager.SCENE_FACTOR_VIDEO
-                | GodEyeManager.SCENE_FACTOR_BRIGHTNESS;
+                | GodEyeManager.SCENE_FACTOR_AUDIO
+                | GodEyeManager.SCENE_FACTOR_BRIGHTNESS
+                | GodEyeManager.SCENE_FACTOR_TEMPERATURE;
 
         GodEyeManager.getDefault().subscribeObserver(new GodEyeObserver() {
             @Override

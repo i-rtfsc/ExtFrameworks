@@ -35,7 +35,7 @@ import system.ext.utils.JosLog;
 
 public class HookSystemConfigImpl implements HookSystemConfig {
     private static final String TAG = HookSystemConfigImpl.class.getSimpleName();
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private static final ArrayMap<String, String> GOG_EYE_APPS = new ArrayMap<>();
 

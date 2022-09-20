@@ -34,7 +34,7 @@ public class GodEyeManager {
     public static final long SCENE_FACTOR_AUDIO = 1 << 4;
     public static final long SCENE_FACTOR_BRIGHTNESS = 1 << 5;
     public static final long SCENE_FACTOR_TEMPERATURE = 1 << 6;
-    public static final long SCENE_FACTOR_TOUCH = 1 << 7;
+    //public static final long SCENE_FACTOR_TOUCH = 1 << 7;
 
     private static final String TAG = GodEyeManager.class.getSimpleName();
     private static final boolean DEBUG = true;

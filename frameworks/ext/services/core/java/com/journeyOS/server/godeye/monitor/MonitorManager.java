@@ -23,6 +23,7 @@ import com.journeyOS.server.godeye.Scene;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import system.ext.utils.JosLog;
@@ -66,12 +67,12 @@ public class MonitorManager {
             }
         }
 
-        if ((factors & GodEyeManager.SCENE_FACTOR_BRIGHTNESS) != 0) {
-            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_BRIGHTNESS);
+        if ((factors & GodEyeManager.SCENE_FACTOR_CAMERA) != 0) {
+            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_CAMERA);
             if (monitor == null) {
-                monitor = BrightnessMonitor.getInstance();
-                monitor.init(mContext, GodEyeManager.SCENE_FACTOR_BRIGHTNESS);
-                mMonitors.put(GodEyeManager.SCENE_FACTOR_BRIGHTNESS, monitor);
+                monitor = CameraMonitor.getInstance();
+                monitor.init(mContext, GodEyeManager.SCENE_FACTOR_CAMERA);
+                mMonitors.put(GodEyeManager.SCENE_FACTOR_CAMERA, monitor);
             }
         }
 
@@ -85,12 +86,21 @@ public class MonitorManager {
             }
         }
 
-        if ((factors & GodEyeManager.SCENE_FACTOR_CAMERA) != 0) {
-            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_CAMERA);
+        if ((factors & GodEyeManager.SCENE_FACTOR_BRIGHTNESS) != 0) {
+            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_BRIGHTNESS);
             if (monitor == null) {
-                monitor = CameraMonitor.getInstance();
-                monitor.init(mContext, GodEyeManager.SCENE_FACTOR_CAMERA);
-                mMonitors.put(GodEyeManager.SCENE_FACTOR_CAMERA, monitor);
+                monitor = BrightnessMonitor.getInstance();
+                monitor.init(mContext, GodEyeManager.SCENE_FACTOR_BRIGHTNESS);
+                mMonitors.put(GodEyeManager.SCENE_FACTOR_BRIGHTNESS, monitor);
+            }
+        }
+
+        if ((factors & GodEyeManager.SCENE_FACTOR_TEMPERATURE) != 0) {
+            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_TEMPERATURE);
+            if (monitor == null) {
+                monitor = TemperatureMonitor.getInstance();
+                monitor.init(mContext, GodEyeManager.SCENE_FACTOR_TEMPERATURE);
+                mMonitors.put(GodEyeManager.SCENE_FACTOR_TEMPERATURE, monitor);
             }
         }
 
@@ -107,8 +117,8 @@ public class MonitorManager {
             result = monitor.start();
         }
 
-        if ((factors & GodEyeManager.SCENE_FACTOR_BRIGHTNESS) != 0) {
-            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_BRIGHTNESS);
+        if ((factors & GodEyeManager.SCENE_FACTOR_CAMERA) != 0) {
+            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_CAMERA);
             result = monitor.start();
         }
 
@@ -118,8 +128,13 @@ public class MonitorManager {
             result = monitor.start();
         }
 
-        if ((factors & GodEyeManager.SCENE_FACTOR_CAMERA) != 0) {
-            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_CAMERA);
+        if ((factors & GodEyeManager.SCENE_FACTOR_BRIGHTNESS) != 0) {
+            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_BRIGHTNESS);
+            result = monitor.start();
+        }
+
+        if ((factors & GodEyeManager.SCENE_FACTOR_TEMPERATURE) != 0) {
+            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_TEMPERATURE);
             result = monitor.start();
         }
 
@@ -134,8 +149,9 @@ public class MonitorManager {
             result = monitor.stop();
         }
 
-        if ((factors & GodEyeManager.SCENE_FACTOR_BRIGHTNESS) != 0) {
-            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_BRIGHTNESS);
+        if ((factors & GodEyeManager.SCENE_FACTOR_CAMERA) != 0 ||
+                (factors & GodEyeManager.SCENE_FACTOR_CAMERA) != 0) {
+            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_CAMERA);
             result = monitor.stop();
         }
 
@@ -145,9 +161,13 @@ public class MonitorManager {
             result = monitor.stop();
         }
 
-        if ((factors & GodEyeManager.SCENE_FACTOR_CAMERA) != 0 ||
-                (factors & GodEyeManager.SCENE_FACTOR_CAMERA) != 0) {
-            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_CAMERA);
+        if ((factors & GodEyeManager.SCENE_FACTOR_BRIGHTNESS) != 0) {
+            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_BRIGHTNESS);
+            result = monitor.stop();
+        }
+
+        if ((factors & GodEyeManager.SCENE_FACTOR_TEMPERATURE) != 0) {
+            BaseMonitor monitor = mMonitors.get(GodEyeManager.SCENE_FACTOR_TEMPERATURE);
             result = monitor.stop();
         }
 
@@ -166,6 +186,11 @@ public class MonitorManager {
             for (OnSceneListener listener : mListeners) {
                 listener.onChanged(scene);
             }
+        }
+
+        for (Map.Entry<Long, BaseMonitor> entry : mMonitors.entrySet()) {
+            BaseMonitor monitor = entry.getValue();
+            monitor.onChanged(scene);
         }
     }
 

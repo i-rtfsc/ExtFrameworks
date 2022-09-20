@@ -20,9 +20,9 @@ import android.content.Context;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 
+import com.android.server.LocalServices;
 import com.journeyOS.server.godeye.clients.ClientSession;
 import com.journeyOS.server.godeye.monitor.MonitorManager;
-import com.journeyOS.server.godeye.monitor.PackageNameMonitor;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -32,10 +32,12 @@ import system.ext.utils.JosLog;
 /**
  * GodEyeService
  */
-public class GodEyeService extends IGodEyeService.Stub implements MonitorManager.OnSceneListener {
+public class GodEyeService extends IGodEyeService.Stub {
     private static final String TAG = GodEyeService.class.getSimpleName();
 
     private final Context mContext;
+
+    private LocalGodEyeServiceImpl mLocalService = null;
 
     public GodEyeService(Context context) {
         this.mContext = context;
@@ -44,8 +46,8 @@ public class GodEyeService extends IGodEyeService.Stub implements MonitorManager
     public void systemReady() {
         JosLog.i(GodEyeManager.GOD_EYE_TAG, TAG, "systemReady");
         ServiceManager.addService(GodEyeManager.GOD_EYE_SERVICE, asBinder());
-        MonitorManager.getInstance().init(mContext);
-        MonitorManager.getInstance().registerListener(this);
+        mLocalService = new LocalGodEyeServiceImpl(mContext);
+        LocalServices.addService(LocalGodEyeService.class, mLocalService);
     }
 
     @Override
@@ -77,7 +79,7 @@ public class GodEyeService extends IGodEyeService.Stub implements MonitorManager
 
     @Override
     public void removeFactor(long factors) throws RemoteException {
-        if (ClientSession.getInstance().checkFactorFromCategory(factors)) {
+        if (ClientSession.getInstance().checkFactorFromCategory(factors) && mLocalService.checkFactorFromLocal(factors)) {
             MonitorManager.getInstance().stop(factors);
         }
         ClientSession.getInstance().removeFactorFromCategory(factors);
@@ -116,11 +118,5 @@ public class GodEyeService extends IGodEyeService.Stub implements MonitorManager
     @Override
     public void onAudioStopped(int callingPid, int stream, long track) throws RemoteException {
         JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "on audio stopped, callingPid = [" + callingPid + "], stream = [" + stream + "], track = [" + track + "]");
-    }
-
-    @Override
-    public void onChanged(Scene scene) {
-        JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "on changed, scene = [" + scene.toString() + "]");
-        ClientSession.getInstance().dispatchFactorEvent(scene);
     }
 }

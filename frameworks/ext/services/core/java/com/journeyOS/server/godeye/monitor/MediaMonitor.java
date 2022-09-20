@@ -26,7 +26,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.RemoteException;
-import android.util.ArrayMap;
 
 import com.journeyOS.server.godeye.GodEyeManager;
 import com.journeyOS.server.godeye.GodEyeThread;
@@ -102,17 +101,41 @@ public class MediaMonitor extends BaseMonitor {
         }
     }
 
-    private void handlerActive(PlayConfig playConfig) {
+    @Override
+    protected void onChanged(Scene scene) {
+        JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "scene app = [" + scene.getApp() + "]");
+        if ((scene.getFactorId() & GodEyeManager.SCENE_FACTOR_APP) != 0) {
+            switch (scene.getApp()) {
+                case Scene.App.VIDEO:
+                case Scene.App.MUSIC: {
+                    handlerActivePlayer();
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void handlerActivePlayer() {
+        if (mAm != null) {
+            List<AudioPlaybackConfiguration> configs = mAm.getActivePlaybackConfigurations();
+            if (mAudioManagerPlaybackListener != null) {
+                mAudioManagerPlaybackListener.handlerPlaybackConfigChanged(configs, true);
+            }
+        }
+    }
+
+    private void handlerActive(PlayConfig playConfig, boolean force) {
         PlayConfig pevNotifyPlayConfig = mPlayers.get(playConfig.clientPid);
-        if (playConfig.equals(pevNotifyPlayConfig)) {
+        if (!force && playConfig.equals(pevNotifyPlayConfig)) {
             if (DEBUG) {
                 JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "has been notify, don't need notify again");
             }
             return;
         }
 
-        JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "handler active, config = [" + playConfig + "]");
-
+        JosLog.d(GodEyeManager.GOD_EYE_TAG, "handler active, config = [" + playConfig + "], force = [" + force + "]");
         mPlayers.put(playConfig.clientPid, playConfig);
 
         Scene scene = getPreviewScene();
@@ -137,17 +160,16 @@ public class MediaMonitor extends BaseMonitor {
         notifyResult(scene);
     }
 
-    private void handlerInactive(PlayConfig playConfig) {
+    private void handlerInactive(PlayConfig playConfig, boolean force) {
         PlayConfig pevNotifyPlayConfig = mPlayers.get(playConfig.clientPid);
-        if (playConfig.equals(pevNotifyPlayConfig)) {
+        if (!force && playConfig.equals(pevNotifyPlayConfig)) {
             if (DEBUG) {
                 JosLog.w(GodEyeManager.GOD_EYE_TAG, TAG, "has been notify, don't need notify again");
             }
             return;
         }
 
-        JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "handler inactive, config = [" + playConfig + "]");
-
+        JosLog.d(GodEyeManager.GOD_EYE_TAG, "handler inactive, config = [" + playConfig + "], force = [" + force + "]");
         mPlayers.put(playConfig.clientPid, playConfig);
 
         Scene scene = getPreviewScene();
@@ -213,10 +235,10 @@ public class MediaMonitor extends BaseMonitor {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_ACTIVE:
-                    handlerActive((PlayConfig) msg.obj);
+                    handlerActive((PlayConfig) msg.obj, msg.arg1 == 1);
                     break;
                 case MSG_INACTIVE:
-                    handlerInactive((PlayConfig) msg.obj);
+                    handlerInactive((PlayConfig) msg.obj, msg.arg1 == 1);
                     break;
                 default:
                     break;
@@ -270,8 +292,12 @@ public class MediaMonitor extends BaseMonitor {
     private class AudioManagerPlaybackListener extends AudioManager.AudioPlaybackCallback {
         @Override
         public void onPlaybackConfigChanged(List<AudioPlaybackConfiguration> configs) {
+            handlerPlaybackConfigChanged(configs, false);
+        }
+
+        public void handlerPlaybackConfigChanged(List<AudioPlaybackConfiguration> configs, boolean force) {
+            JosLog.i(GodEyeManager.GOD_EYE_TAG, TAG, "force = [" + force + "]");
             synchronized (mLock) {
-                ArrayMap<Integer, AudioPlaybackConfiguration> activeAudioPlaybackConfigs = new ArrayMap<>();
                 for (AudioPlaybackConfiguration config : configs) {
                     int playerState = config.getPlayerState();
                     if (AudioPlaybackConfiguration.PLAYER_STATE_STARTED == playerState
@@ -298,6 +324,7 @@ public class MediaMonitor extends BaseMonitor {
                             Message message = Message.obtain();
                             message.what = MessageHandler.MSG_ACTIVE;
                             message.obj = playConfig;
+                            message.arg1 = force ? 1 : 0;
                             mH.sendMessageDelayed(message, MessageHandler.DELAYED);
                         } else {
                             if (mH.hasMessages(MessageHandler.MSG_INACTIVE)) {
@@ -306,6 +333,7 @@ public class MediaMonitor extends BaseMonitor {
                             Message message = Message.obtain();
                             message.what = MessageHandler.MSG_INACTIVE;
                             message.obj = playConfig;
+                            message.arg1 = force ? 1 : 0;
                             mH.sendMessageDelayed(message, MessageHandler.DELAYED);
                         }
                     }

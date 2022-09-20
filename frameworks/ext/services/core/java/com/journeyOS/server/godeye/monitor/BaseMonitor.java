@@ -82,6 +82,9 @@ public abstract class BaseMonitor {
 
     protected abstract void onStop();
 
+    protected void onChanged(Scene scene) {
+    }
+
     protected String getProcessName(int pid) {
         ActivityManager activityManager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> apps = activityManager.getRunningAppProcesses();

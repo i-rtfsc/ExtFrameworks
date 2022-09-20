@@ -40,6 +40,7 @@ public class VariableRefreshRateService extends IVariableRefreshRateService.Stub
     public void systemReady() {
         JosLog.i(VRRManager.VRR_TAG, TAG, "systemReady");
         ServiceManager.addService(VRRManager.VRR_SERVICE, asBinder());
+        VrrPolicy.getDefault();
     }
 
     @Override
