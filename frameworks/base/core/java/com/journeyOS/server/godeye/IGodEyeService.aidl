@@ -24,7 +24,7 @@ interface IGodEyeService {
     void setFactor(long factors);
     void updateFactor(long factors);
     void removeFactor(long factors);
-    void activityResumed(String packageName);
+    void onActivityResumed(String packageName);
     void onCameraConnected(int cameraId, String clientPackageName);
     void onCameraDisconnected(int cameraId, String clientPackageName);
     void onVideoStarted(int callingPid);

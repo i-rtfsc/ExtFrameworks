@@ -31,8 +31,8 @@ namespace android {
     class IVariableRefreshRateService : public IInterface {
     public:
         enum {
-            SET_REFRESH_RATE_POLICY = IBinder::FIRST_CALL_TRANSACTION,
-            ON_FPS_CHANGE,
+            TRANSACTION_SET_REFRESH_RATE_POLICY = IBinder::FIRST_CALL_TRANSACTION,
+            TRANSACTION_ON_FPS_CHANGE,
         };
 
         virtual void setRefreshRatePolicy(int displayId, float rate, int policy, bool statusOn) = 0;

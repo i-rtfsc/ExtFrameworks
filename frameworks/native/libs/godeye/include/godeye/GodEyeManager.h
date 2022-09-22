@@ -64,7 +64,7 @@ namespace android {
 
         void removeFactor(const int64_t factors);
 
-        void activityResumed(const String16 &packageName);
+        void onActivityResumed(const String16 &packageName);
 
         void onCameraConnected(const int cameraId, const String16 &clientPackageName);
 

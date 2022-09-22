@@ -22,7 +22,7 @@ import system.ext.utils.JosLog;
 
 public class HookWindowStateImpl implements HookWindowState {
     private static final String TAG = HookWindowStateImpl.class.getSimpleName();
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private static HookWindowStateImpl sInstance;
     /**
      * This is the frame rate which is passed to SurfaceFlinger if the window set a
@@ -30,6 +30,8 @@ public class HookWindowStateImpl implements HookWindowState {
      * The variable is cached, so we do not send too many updates to SF.
      */
     private float mAppPreferredFrameRate = 0f;
+
+    private int mPid;
 
     public HookWindowStateImpl() {
     }
@@ -44,6 +46,14 @@ public class HookWindowStateImpl implements HookWindowState {
     }
 
     @Override
+    public int getPid() {
+        if (DEBUG) {
+            JosLog.d(VRRManager.VRR_TAG, TAG, "get pid = [" + mPid + "]");
+        }
+        return mPid;
+    }
+
+    @Override
     public float getPreferredRefreshRate() {
         if (DEBUG) {
             JosLog.d(VRRManager.VRR_TAG, TAG, "get preferred refresh rate = [" + mAppPreferredFrameRate + "]");
@@ -52,7 +62,7 @@ public class HookWindowStateImpl implements HookWindowState {
     }
 
     @Override
-    public void setPreferredRefreshRate(float refreshRate) {
+    public void setPreferredRefreshRate(int pid, float refreshRate) {
         mAppPreferredFrameRate = refreshRate;
         if (DEBUG) {
             JosLog.d(VRRManager.VRR_TAG, TAG, "set preferred refresh rate = [" + mAppPreferredFrameRate + "]");

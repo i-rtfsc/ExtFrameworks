@@ -33,18 +33,18 @@ namespace android {
     class IGodEyeService : public IInterface {
     public:
         enum {
-            REGISTER_LISTENER = IBinder::FIRST_CALL_TRANSACTION,
-            UNREGISTER_LISTENER,
-            SET_FACTOR,
-            UPDATE_FACTOR,
-            REMOVE_FACTOR,
-            ACTIVITY_RESUMED,
-            ON_CAMERA_CONNECTED,
-            ON_CAMERA_DISCONNECTED,
-            ON_VIDEO_STARTED,
-            ON_VIDEO_STOPPED,
-            ON_AUDIO_STARTED,
-            ON_AUDIO_STOPPED,
+            TRANSACTION_REGISTER_LISTENER = IBinder::FIRST_CALL_TRANSACTION,
+            TRANSACTION_UNREGISTER_LISTENER,
+            TRANSACTION_SET_FACTOR,
+            TRANSACTION_UPDATE_FACTOR,
+            TRANSACTION_REMOVE_FACTOR,
+            TRANSACTION_ON_ACTIVITY_RESUMED,
+            TRANSACTION_ON_CAMERA_CONNECTED,
+            TRANSACTION_ON_CAMERA_DISCONNECTED,
+            TRANSACTION_ON_VIDEO_STARTED,
+            TRANSACTION_ON_VIDEO_STOPPED,
+            TRANSACTION_ON_AUDIO_STARTED,
+            TRANSACTION_ON_AUDIO_STOPPED,
         };
 
         virtual void registerListener(const sp <IGodEyeListener> &listener) = 0;
@@ -57,7 +57,7 @@ namespace android {
 
         virtual void removeFactor(const int64_t factors) = 0;
 
-        virtual void activityResumed(const String16 &packageName) = 0;
+        virtual void onActivityResumed(const String16 &packageName) = 0;
 
         virtual void onCameraConnected(const int cameraId, const String16 &clientPackageName) = 0;
 

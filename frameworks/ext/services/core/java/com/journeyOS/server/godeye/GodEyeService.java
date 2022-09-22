@@ -56,29 +56,34 @@ public class GodEyeService extends IGodEyeService.Stub {
     }
 
     @Override
-    public void registerListener(IGodEyeListener listener) throws RemoteException {
+    public void registerListener(IGodEyeListener listener)
+            throws RemoteException {
         ClientSession.getInstance().insertToCategory(listener);
     }
 
     @Override
-    public void unregisterListener(IGodEyeListener listener) throws RemoteException {
+    public void unregisterListener(IGodEyeListener listener)
+            throws RemoteException {
         ClientSession.getInstance().removeFromCategory(listener);
     }
 
     @Override
-    public void setFactor(long factors) throws RemoteException {
+    public void setFactor(long factors)
+            throws RemoteException {
         MonitorManager.getInstance().start(factors);
         ClientSession.getInstance().setFactorToCategory(factors);
     }
 
     @Override
-    public void updateFactor(long factors) throws RemoteException {
+    public void updateFactor(long factors)
+            throws RemoteException {
         MonitorManager.getInstance().start(factors);
         ClientSession.getInstance().updateFactorToCategory(factors);
     }
 
     @Override
-    public void removeFactor(long factors) throws RemoteException {
+    public void removeFactor(long factors)
+            throws RemoteException {
         if (ClientSession.getInstance().checkFactorFromCategory(factors) && mLocalService.checkFactorFromLocal(factors)) {
             MonitorManager.getInstance().stop(factors);
         }
@@ -86,37 +91,44 @@ public class GodEyeService extends IGodEyeService.Stub {
     }
 
     @Override
-    public void activityResumed(String packageName) throws RemoteException {
+    public void onActivityResumed(String packageName)
+            throws RemoteException {
         JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "activity resumed, packageName = [" + packageName + "]");
     }
 
     @Override
-    public void onCameraConnected(int cameraId, String clientPackageName) throws RemoteException {
+    public void onCameraConnected(int cameraId, String clientPackageName)
+            throws RemoteException {
         JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "on camera connected, cameraId = [" + cameraId + "], clientPackageName = [" + clientPackageName + "]");
     }
 
     @Override
-    public void onCameraDisconnected(int cameraId, String clientPackageName) throws RemoteException {
+    public void onCameraDisconnected(int cameraId, String clientPackageName)
+            throws RemoteException {
         JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "on camera disconnected, cameraId = [" + cameraId + "], clientPackageName = [" + clientPackageName + "]");
     }
 
     @Override
-    public void onVideoStarted(int callingPid) throws RemoteException {
+    public void onVideoStarted(int callingPid)
+            throws RemoteException {
         JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "on video started, callingPid = [" + callingPid + "]");
     }
 
     @Override
-    public void onVideoStopped(int callingPid) throws RemoteException {
+    public void onVideoStopped(int callingPid)
+            throws RemoteException {
         JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "on video stopped, callingPid = [" + callingPid + "]");
     }
 
     @Override
-    public void onAudioStarted(int callingPid, int stream, long track) throws RemoteException {
+    public void onAudioStarted(int callingPid, int stream, long track)
+            throws RemoteException {
         JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "on audio started, callingPid = [" + callingPid + "], stream = [" + stream + "], track = [" + track + "]");
     }
 
     @Override
-    public void onAudioStopped(int callingPid, int stream, long track) throws RemoteException {
+    public void onAudioStopped(int callingPid, int stream, long track)
+            throws RemoteException {
         JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "on audio stopped, callingPid = [" + callingPid + "], stream = [" + stream + "], track = [" + track + "]");
     }
 }

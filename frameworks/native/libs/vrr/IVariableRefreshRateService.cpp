@@ -31,14 +31,14 @@ namespace android {
             data.writeFloat(rate);
             data.writeInt32(policy);
             data.writeBool(statusOn);
-            remote()->transact(SET_REFRESH_RATE_POLICY, data, &reply, IBinder::FLAG_ONEWAY);
+            remote()->transact(TRANSACTION_SET_REFRESH_RATE_POLICY, data, &reply, IBinder::FLAG_ONEWAY);
         }
 
         void onFpsChange(int fps) {
             Parcel data, reply;
             data.writeInterfaceToken(BpVariableRefreshRateService::getInterfaceDescriptor());
             data.writeInt32(fps);
-            remote()->transact(ON_FPS_CHANGE, data, &reply, IBinder::FLAG_ONEWAY);
+            remote()->transact(TRANSACTION_ON_FPS_CHANGE, data, &reply, IBinder::FLAG_ONEWAY);
         }
     };
 

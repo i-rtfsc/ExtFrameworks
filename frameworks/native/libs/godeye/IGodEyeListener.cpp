@@ -31,7 +31,7 @@ namespace android {
             data.writeString16(scene.packageName);
             data.writeInt32(scene.type);
             data.writeInt32(scene.status);
-            remote()->transact(ON_SCENE_CHANGED, data, &reply, IBinder::FLAG_ONEWAY);
+            remote()->transact(TRANSACTION_ON_SCENE_CHANGED, data, &reply, IBinder::FLAG_ONEWAY);
         }
 
     };

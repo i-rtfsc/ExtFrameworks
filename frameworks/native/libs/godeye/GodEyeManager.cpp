@@ -101,12 +101,12 @@ namespace android {
         mServicePolicy->removeFactor(factors);
     }
 
-    void GodEyeManager::activityResumed(const String16& packageName) {
-        LOGI("activity resumed, packageName = %s", String16(packageName).string());
+    void GodEyeManager::onActivityResumed(const String16& packageName) {
+        LOGI("on activity resumed, packageName = %s", String16(packageName).string());
         if (mServicePolicy == nullptr) {
             getServicePolicy();
         }
-        mServicePolicy->activityResumed(packageName);
+        mServicePolicy->onActivityResumed(packageName);
     }
 
     void GodEyeManager::onCameraConnected(const int cameraId, const String16& clientPackageName) {

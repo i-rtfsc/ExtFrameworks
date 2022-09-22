@@ -13,10 +13,11 @@ ext {
     ]
 
     //设置源码所在的目录
-    aospDir = "/home/solo/code/aosp"
-    if (org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {
-        aospDir = "/Users/solo/code/aosp"
-    }
+    aospDir = "/${rootDir}/../../"
+//    aospDir = "/home/solo/code/aosp"
+//    if (org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {
+//        aospDir = "/Users/solo/code/aosp"
+//    }
 
     //设置扩展framework源码所在的目录
     extDir = "$aospDir/jos"

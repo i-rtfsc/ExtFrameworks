@@ -28,42 +28,42 @@ namespace android {
             Parcel data;
             data.writeInterfaceToken(BpGodEyeService::getInterfaceDescriptor());
             data.writeStrongBinder(IInterface::asBinder(listener));
-            remote()->transact(REGISTER_LISTENER, data, NULL);
+            remote()->transact(TRANSACTION_REGISTER_LISTENER, data, NULL);
         }
 
         void unregisterListener(const sp<IGodEyeListener>& listener) {
             Parcel data;
             data.writeInterfaceToken(BpGodEyeService::getInterfaceDescriptor());
             data.writeStrongBinder(IInterface::asBinder(listener));
-            remote()->transact(UNREGISTER_LISTENER, data, NULL);
+            remote()->transact(TRANSACTION_UNREGISTER_LISTENER, data, NULL);
         }
 
         void setFactor(const int64_t factors) {
             Parcel data;
             data.writeInterfaceToken(BpGodEyeService::getInterfaceDescriptor());
             data.writeInt64(factors);
-            remote()->transact(SET_FACTOR, data, NULL);
+            remote()->transact(TRANSACTION_SET_FACTOR, data, NULL);
         }
 
         void updateFactor(const int64_t factors) {
             Parcel data;
             data.writeInterfaceToken(BpGodEyeService::getInterfaceDescriptor());
             data.writeInt64(factors);
-            remote()->transact(UPDATE_FACTOR, data, NULL);
+            remote()->transact(TRANSACTION_UPDATE_FACTOR, data, NULL);
         }
 
         void removeFactor(const int64_t factors) {
             Parcel data;
             data.writeInterfaceToken(BpGodEyeService::getInterfaceDescriptor());
             data.writeInt64(factors);
-            remote()->transact(REMOVE_FACTOR, data, NULL);
+            remote()->transact(TRANSACTION_REMOVE_FACTOR, data, NULL);
         }
 
-        void activityResumed(const String16& packageName) {
+        void onActivityResumed(const String16& packageName) {
             Parcel data;
             data.writeInterfaceToken(BpGodEyeService::getInterfaceDescriptor());
             data.writeString16(packageName);
-            remote()->transact(ACTIVITY_RESUMED, data, NULL);
+            remote()->transact(TRANSACTION_ON_ACTIVITY_RESUMED, data, NULL);
         }
 
         void onCameraConnected(const int cameraId, const String16& clientPackageName) {
@@ -71,7 +71,7 @@ namespace android {
             data.writeInterfaceToken(BpGodEyeService::getInterfaceDescriptor());
             data.writeInt32(cameraId);
             data.writeString16(clientPackageName);
-            remote()->transact(ON_CAMERA_CONNECTED, data, &reply, IBinder::FLAG_ONEWAY);
+            remote()->transact(TRANSACTION_ON_CAMERA_CONNECTED, data, &reply, IBinder::FLAG_ONEWAY);
         }
 
         void onCameraDisconnected(const int cameraId, const String16& clientPackageName) {
@@ -79,21 +79,21 @@ namespace android {
             data.writeInterfaceToken(BpGodEyeService::getInterfaceDescriptor());
             data.writeInt32(cameraId);
             data.writeString16(clientPackageName);
-            remote()->transact(ON_CAMERA_DISCONNECTED, data, &reply, IBinder::FLAG_ONEWAY);
+            remote()->transact(TRANSACTION_ON_CAMERA_DISCONNECTED, data, &reply, IBinder::FLAG_ONEWAY);
         }
 
         void onVideoStarted(const int callingPid) {
             Parcel data, reply;
             data.writeInterfaceToken(BpGodEyeService::getInterfaceDescriptor());
             data.writeInt32(callingPid);
-            remote()->transact(ON_VIDEO_STARTED, data, &reply, IBinder::FLAG_ONEWAY);
+            remote()->transact(TRANSACTION_ON_VIDEO_STARTED, data, &reply, IBinder::FLAG_ONEWAY);
         }
 
         void onVideoStopped(const int callingPid) {
             Parcel data, reply;
             data.writeInterfaceToken(BpGodEyeService::getInterfaceDescriptor());
             data.writeInt32(callingPid);
-            remote()->transact(ON_VIDEO_STOPPED, data, &reply, IBinder::FLAG_ONEWAY);
+            remote()->transact(TRANSACTION_ON_VIDEO_STOPPED, data, &reply, IBinder::FLAG_ONEWAY);
         }
 
         void onAudioStarted(const int callingPid, const int stream, const int64_t track) {
@@ -102,7 +102,7 @@ namespace android {
             data.writeInt32(callingPid);
             data.writeInt32(stream);
             data.writeInt64(track);
-            remote()->transact(ON_AUDIO_STARTED, data, &reply, IBinder::FLAG_ONEWAY);
+            remote()->transact(TRANSACTION_ON_AUDIO_STARTED, data, &reply, IBinder::FLAG_ONEWAY);
         }
 
         void onAudioStopped(const int callingPid, const int stream, const int64_t track) {
@@ -111,7 +111,7 @@ namespace android {
             data.writeInt32(callingPid);
             data.writeInt32(stream);
             data.writeInt64(track);
-            remote()->transact(ON_AUDIO_STARTED, data, &reply, IBinder::FLAG_ONEWAY);
+            remote()->transact(TRANSACTION_ON_AUDIO_STARTED, data, &reply, IBinder::FLAG_ONEWAY);
         }
     };
 

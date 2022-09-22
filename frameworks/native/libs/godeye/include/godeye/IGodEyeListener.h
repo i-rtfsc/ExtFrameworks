@@ -55,7 +55,7 @@ namespace android {
     class IGodEyeListener : public IInterface {
     public:
         enum {
-            ON_SCENE_CHANGED = IBinder::FIRST_CALL_TRANSACTION,
+            TRANSACTION_ON_SCENE_CHANGED = IBinder::FIRST_CALL_TRANSACTION,
         };
 
         virtual void onSceneChanged(const Scene scene) = 0;

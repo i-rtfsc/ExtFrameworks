@@ -24,11 +24,15 @@ public interface HookWindowState {
         return (HookWindowState) Inject.getInstance().getInject(HookWindowState.class, null, true);
     }
 
+    default int getPid() {
+        return 0;
+    }
+
     default float getPreferredRefreshRate() {
         return 0;
     }
 
-    default void setPreferredRefreshRate(float refreshRate) {
+    default void setPreferredRefreshRate(int pid, float refreshRate) {
     }
 
 }
