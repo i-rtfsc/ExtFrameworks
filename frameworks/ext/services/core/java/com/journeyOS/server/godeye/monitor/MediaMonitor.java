@@ -138,9 +138,10 @@ public class MediaMonitor extends BaseMonitor {
         JosLog.d(GodEyeManager.GOD_EYE_TAG, "handler active, config = [" + playConfig + "], force = [" + force + "]");
         mPlayers.put(playConfig.clientPid, playConfig);
 
-        Scene scene = getPreviewScene();
-        scene.setStatus(Scene.State.ON);
-        scene.setValue(playConfig.packageName);
+        Scene.Builder builder = new Scene.Builder();
+        builder.copy(getPreviewScene());
+        builder.setStatus(Scene.State.ON);
+        builder.setValue(playConfig.packageName);
 
 //        if (!playConfig.packageName.equals(scene.getPackageName())) {
 //            JosLog.w(GodEyeManager.GOD_EYE_TAG, TAG, "player on background, don't need notify...");
@@ -149,15 +150,15 @@ public class MediaMonitor extends BaseMonitor {
 
         int app = convertApp(playConfig.packageName);
         if (Scene.App.VIDEO == app) {
-            scene.setFactorId(GodEyeManager.SCENE_FACTOR_VIDEO);
+            builder.setFactorId(GodEyeManager.SCENE_FACTOR_VIDEO);
         } else if (Scene.App.MUSIC == app) {
-            scene.setFactorId(GodEyeManager.SCENE_FACTOR_AUDIO);
+            builder.setFactorId(GodEyeManager.SCENE_FACTOR_AUDIO);
         } else {
             JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "unknown app...");
-            scene.setFactorId(GodEyeManager.SCENE_FACTOR_AUDIO);
+            builder.setFactorId(GodEyeManager.SCENE_FACTOR_AUDIO);
         }
 
-        notifyResult(scene);
+        notifyResult(builder.build());
     }
 
     private void handlerInactive(PlayConfig playConfig, boolean force) {
@@ -172,9 +173,10 @@ public class MediaMonitor extends BaseMonitor {
         JosLog.d(GodEyeManager.GOD_EYE_TAG, "handler inactive, config = [" + playConfig + "], force = [" + force + "]");
         mPlayers.put(playConfig.clientPid, playConfig);
 
-        Scene scene = getPreviewScene();
-        scene.setStatus(Scene.State.OFF);
-        scene.setValue(playConfig.packageName);
+        Scene.Builder builder = new Scene.Builder();
+        builder.copy(getPreviewScene());
+        builder.setStatus(Scene.State.ON);
+        builder.setValue(playConfig.packageName);
 
 //        if (!playConfig.packageName.equals(scene.getPackageName())) {
 //            JosLog.w(GodEyeManager.GOD_EYE_TAG, TAG, "player on background, don't need notify.");
@@ -183,15 +185,15 @@ public class MediaMonitor extends BaseMonitor {
 
         int app = convertApp(playConfig.packageName);
         if (Scene.App.VIDEO == app) {
-            scene.setFactorId(GodEyeManager.SCENE_FACTOR_VIDEO);
+            builder.setFactorId(GodEyeManager.SCENE_FACTOR_VIDEO);
         } else if (Scene.App.MUSIC == app) {
-            scene.setFactorId(GodEyeManager.SCENE_FACTOR_AUDIO);
+            builder.setFactorId(GodEyeManager.SCENE_FACTOR_AUDIO);
         } else {
             JosLog.d(GodEyeManager.GOD_EYE_TAG, TAG, "unknown app...");
-            scene.setFactorId(GodEyeManager.SCENE_FACTOR_AUDIO);
+            builder.setFactorId(GodEyeManager.SCENE_FACTOR_AUDIO);
         }
 
-        notifyResult(scene);
+        notifyResult(builder.build());
     }
 
     private final IProcessObserver.Stub mProcessObserver = new IProcessObserver.Stub() {

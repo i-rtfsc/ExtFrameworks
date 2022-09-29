@@ -92,12 +92,12 @@ public class GodEyeDumpCommand {
     }
 
     private void test() {
-        Scene scene = new Scene();
-        scene.setFactorId(mArgFactorId);
-        scene.setPackageName(mArgPackageName);
-        scene.setApp(BaseMonitor.convertApp(mArgPackageName));
-        scene.setStatus(mArgStatus);
-        MonitorManager.getInstance().notifyResult(scene, true);
+        Scene.Builder builder = new Scene.Builder();
+        builder.setFactorId(mArgFactorId);
+        builder.setPackageName(mArgPackageName);
+        builder.setApp(BaseMonitor.convertApp(mArgPackageName));
+        builder.setStatus(mArgStatus);
+        MonitorManager.getInstance().notifyResult(builder.build(), true);
     }
 
 }

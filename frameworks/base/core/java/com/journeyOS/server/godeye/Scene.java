@@ -16,6 +16,7 @@
 
 package com.journeyOS.server.godeye;
 
+import android.annotation.SystemApi;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -35,16 +36,24 @@ public class Scene implements Parcelable {
 
     private long factorId;
     private String packageName = "";
+    private String activity = "";
     private int app;
     private int status;
     private String value;
 
-    public Scene() {
+    public Scene(long factorId, String packageName, String activity, int app, int status, String value) {
+        this.factorId = factorId;
+        this.packageName = packageName;
+        this.activity = activity;
+        this.app = app;
+        this.status = status;
+        this.value = value;
     }
 
     protected Scene(Parcel in) {
         factorId = in.readLong();
         packageName = in.readString();
+        activity = in.readString();
         app = in.readInt();
         status = in.readInt();
         value = in.readString();
@@ -54,6 +63,7 @@ public class Scene implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(factorId);
         dest.writeString(packageName);
+        dest.writeString(activity);
         dest.writeInt(app);
         dest.writeInt(status);
         dest.writeString(value);
@@ -64,40 +74,24 @@ public class Scene implements Parcelable {
         return 0;
     }
 
-    public void setFactorId(long factorId) {
-        this.factorId = factorId;
-    }
-
     public long getFactorId() {
         return factorId;
-    }
-
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
     }
 
     public String getPackageName() {
         return packageName;
     }
 
-    public void setApp(int app) {
-        this.app = app;
+    public String getActivity() {
+        return activity;
     }
 
     public int getApp() {
         return app;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
     public int getStatus() {
         return status;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
     }
 
     public String getPlayer() {
@@ -116,15 +110,15 @@ public class Scene implements Parcelable {
         return -1;
     }
 
-
     @Override
     public String toString() {
         return "Scene{" +
                 "factorId=" + factorId +
                 ", packageName='" + packageName + '\'' +
+                ", activity='" + activity + '\'' +
                 ", app=" + app +
                 ", status=" + status +
-                ", value=" + value +
+                ", value='" + value + '\'' +
                 '}';
     }
 
@@ -146,4 +140,85 @@ public class Scene implements Parcelable {
         public static final int OFF = 0;
     }
 
+    /**
+     * Builder
+     */
+    @SystemApi
+    public static class Builder {
+        private static final int UNSET = -1;
+        private long factorId = UNSET;
+        private String packageName = null;
+        private String activity = null;
+        private int app = UNSET;
+        private int status = UNSET;
+        private String value = null;
+        private Scene mScene = null;
+
+        public Builder setFactorId(long factorId) {
+            this.factorId = factorId;
+            return this;
+        }
+
+        public Builder setPackageName(String packageName) {
+            this.packageName = packageName;
+            return this;
+        }
+
+        public Builder setActivity(String activity) {
+            this.activity = activity;
+            return this;
+        }
+
+        public Builder setApp(int app) {
+            this.app = app;
+            return this;
+        }
+
+        public Builder setStatus(int status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder setValue(String value) {
+            this.value = value;
+            return this;
+        }
+
+        public Builder copy(Scene scene) {
+            this.mScene = scene;
+            return this;
+        }
+
+        public Scene build() {
+            if (mScene == null) {
+                return new Scene(factorId, packageName, activity, app, status, value);
+            } else {
+                if (factorId == UNSET) {
+                    factorId = mScene.factorId;
+                }
+
+                if (packageName == null) {
+                    packageName = mScene.packageName;
+                }
+
+                if (activity == null) {
+                    activity = mScene.activity;
+                }
+
+                if (app == UNSET) {
+                    app = mScene.app;
+                }
+
+                if (status == UNSET) {
+                    status = mScene.status;
+                }
+
+                if (value == null) {
+                    value = mScene.value;
+                }
+                mScene = null;
+                return new Scene(factorId, packageName, activity, app, status, value);
+            }
+        }
+    }
 }

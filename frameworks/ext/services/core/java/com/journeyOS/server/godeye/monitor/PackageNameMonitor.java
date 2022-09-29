@@ -88,12 +88,13 @@ public class PackageNameMonitor extends BaseMonitor {
             String packageName = taskInfo.topActivity.getPackageName();
             String activity = taskInfo.topActivity.getClassName();
             JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "on task moved to front, packageName = [" + packageName + "], activity = [" + activity + "]");
-
-            Scene scene = getPreviewScene();
-            scene.setFactorId(GodEyeManager.SCENE_FACTOR_APP);
-            scene.setPackageName(packageName);
-            scene.setApp(convertApp(packageName));
-            notifyResult(scene);
+            Scene.Builder builder = new Scene.Builder();
+            builder.copy(getPreviewScene());
+            builder.setFactorId(GodEyeManager.SCENE_FACTOR_APP);
+            builder.setPackageName(packageName);
+            builder.setActivity(activity);
+            builder.setApp(convertApp(packageName));
+            notifyResult(builder.build());
         }
 
         @Override

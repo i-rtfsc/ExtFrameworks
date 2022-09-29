@@ -34,7 +34,7 @@ public class LocalGodEyeServiceImpl implements LocalGodEyeService, MonitorManage
 
     private final Context mContext;
 
-    private final HashMap<GodEyeListener, Long> mListener = new HashMap<GodEyeListener, Long>();
+    private final HashMap<GodEyeListener, Long> mListeners = new HashMap<GodEyeListener, Long>();
 
     public LocalGodEyeServiceImpl(Context context) {
         this.mContext = context;
@@ -44,23 +44,23 @@ public class LocalGodEyeServiceImpl implements LocalGodEyeService, MonitorManage
 
     @Override
     public void registerListener(long factors, GodEyeListener listener) {
-        if (!mListener.containsKey(listener)) {
-            mListener.put(listener, factors);
+        if (!mListeners.containsKey(listener)) {
+            mListeners.put(listener, factors);
         }
         MonitorManager.getInstance().start(factors);
     }
 
     @Override
     public void unregisterListener(GodEyeListener listener) {
-        if (mListener.containsKey(listener)) {
-            mListener.remove(listener);
+        if (mListeners.containsKey(listener)) {
+            mListeners.remove(listener);
         }
     }
 
     public boolean checkFactorFromLocal(long factors) {
-        boolean exist = mListener.isEmpty() ? true : false;
+        boolean exist = mListeners.isEmpty() ? true : false;
 
-        for (Map.Entry<GodEyeListener, Long> entry : mListener.entrySet()) {
+        for (Map.Entry<GodEyeListener, Long> entry : mListeners.entrySet()) {
             long localFactors = entry.getValue();
 
             if ((localFactors & factors) != 0) {
@@ -78,8 +78,8 @@ public class LocalGodEyeServiceImpl implements LocalGodEyeService, MonitorManage
     @Override
     public void onChanged(Scene scene) {
         JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "on changed, scene = [" + scene.toString() + "]");
-        JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "on changed, listener isEmpty  = [" + mListener.isEmpty() + "]");
-        for (Map.Entry<GodEyeListener, Long> entry : mListener.entrySet()) {
+        JosLog.v(GodEyeManager.GOD_EYE_TAG, TAG, "on changed, listener isEmpty  = [" + mListeners.isEmpty() + "]");
+        for (Map.Entry<GodEyeListener, Long> entry : mListeners.entrySet()) {
             GodEyeListener listener = entry.getKey();
             listener.onSceneChanged(scene);
         }

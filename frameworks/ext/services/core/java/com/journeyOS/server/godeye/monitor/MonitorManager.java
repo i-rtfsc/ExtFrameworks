@@ -36,7 +36,7 @@ public class MonitorManager {
     private final ConcurrentHashMap<Long, BaseMonitor> mMonitors = new ConcurrentHashMap<>();
     private final List<OnSceneListener> mListeners = new ArrayList<OnSceneListener>();
 
-    private Scene mScene = new Scene();
+    private Scene mScene = new Scene.Builder().build();
     private Context mContext;
 
     private MonitorManager() {
