@@ -40,7 +40,7 @@ namespace android {
 
     status_t BnGodEyeListener::onTransact(uint32_t code, const Parcel &data, Parcel *reply, uint32_t flags) {
         switch (code) {
-            case ON_SCENE_CHANGED: {
+            case TRANSACTION_ON_SCENE_CHANGED: {
                 CHECK_INTERFACE(IGodEyeListener, data, reply);
                 Scene scene;
                 scene.readFromParcel(data);

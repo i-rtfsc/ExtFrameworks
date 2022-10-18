@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import system.ext.utils.JosLog;
 
@@ -52,6 +53,11 @@ public class HookSystemConfigImpl implements HookSystemConfig {
     static HookSystemConfigImpl sInstance;
     private final ArraySet<String> mBackgroundServices = new ArraySet<>();
     private SystemConfig mSystemConfig;
+
+    ArrayList<String> mFile = new ArrayList<String>() {{
+        add("etc/permissions/jos-feature.xml");
+        add("etc/sysconfig/jos-apps.xml");
+    }};
 
     public HookSystemConfigImpl() {
     }
@@ -148,9 +154,10 @@ public class HookSystemConfigImpl implements HookSystemConfig {
     public boolean isExtFile(File file) {
         boolean extFile = false;
         if (file != null) {
-            extFile = (file.getPath().endsWith("etc/permissions/jos-feature.xml")
-                    || file.getPath().endsWith("etc/sysconfig/jos-apps.xml")
-            );
+            for (String josFile : mFile) {
+                extFile = file.getPath().endsWith(josFile);
+                break;
+            }
         }
 
         return extFile;

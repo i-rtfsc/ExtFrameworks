@@ -3,6 +3,9 @@ ext {
     versionCode = 1
     versionName = "v1.0"
 
+    enable_boot_jar = true
+    build_app = true
+
     //android开发版本配置
     androidSdk = [
             applicationId    : "com.android.extfwk",
