@@ -23,7 +23,13 @@ import system.ext.hook.Inject;
 public interface HookSystemServer {
 
     static HookSystemServer get() {
-        return (HookSystemServer) Inject.getInstance().getInject(HookSystemServer.class);
+        Object inject = Inject.getInstance().getInject(HookSystemServer.class);
+        if (inject == null) {
+            return new HookSystemServer() {
+            };
+        } else {
+            return (HookSystemServer) inject;
+        }
     }
 
     default void initSystemServer(Context systemContext) {
@@ -36,6 +42,9 @@ public interface HookSystemServer {
     }
 
     default void startOtherServices() {
+    }
+
+    default void startApexServices() {
     }
 
 }

@@ -25,10 +25,17 @@ import system.ext.hook.Inject;
 public interface HookDisplayManagerService {
 
     static HookDisplayManagerService get() {
-        return (HookDisplayManagerService) Inject.getInstance().getInject(HookDisplayManagerService.class);
+        Object inject = Inject.getInstance().getInject(HookDisplayManagerService.class);
+        if (inject == null) {
+            return new HookDisplayManagerService() {
+            };
+        } else {
+            return (HookDisplayManagerService) inject;
+        }
     }
 
-    void init(DisplayManagerService displayManagerService);
+    default void init(DisplayManagerService displayManagerService) {
+    }
 
     default void onStart() {
     }

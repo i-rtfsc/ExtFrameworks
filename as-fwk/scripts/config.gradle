@@ -3,7 +3,7 @@ ext {
     versionCode = 1
     versionName = "v1.0"
 
-    enable_boot_jar = true
+    enable_boot_jar = false
     build_app = true
 
     //android开发版本配置
@@ -16,11 +16,11 @@ ext {
     ]
 
     //设置源码所在的目录
-    aospDir = "${rootDir}/../../"
-//    aospDir = "/home/solo/code/aosp"
-//    if (org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {
-//        aospDir = "/Users/solo/code/aosp"
-//    }
+//    aospDir = "${rootDir}/../../"
+    aospDir = "/home/solo/code/aosp"
+    if (org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {
+        aospDir = "/Users/solo/code/aosp"
+    }
 
     //设置扩展framework源码所在的目录
     extDir = "$aospDir/jos"
@@ -114,3 +114,4 @@ ext {
             "$aospDir/packages/modules/Bluetooth/service/java/",
     ]
 }
+

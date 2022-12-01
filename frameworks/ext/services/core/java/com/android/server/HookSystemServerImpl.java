@@ -50,7 +50,7 @@ public class HookSystemServerImpl implements HookSystemServer {
         if (mGodEyeService == null) {
             mGodEyeService = new GodEyeService(mContext);
             try {
-                mGodEyeService.systemReady();
+                mGodEyeService.publishBinderService();
             } catch (Exception e) {
                 JosLog.e(GodEyeManager.GOD_EYE_TAG, TAG, "publish fail = " + e);
                 e.printStackTrace();
@@ -64,4 +64,8 @@ public class HookSystemServerImpl implements HookSystemServer {
         JosLog.i(TAG, "start other services");
     }
 
+    @Override
+    public void startApexServices() {
+        JosLog.i(TAG, "start apex services");
+    }
 }

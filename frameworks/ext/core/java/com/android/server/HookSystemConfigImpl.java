@@ -205,81 +205,49 @@ public class HookSystemConfigImpl implements HookSystemConfig {
     @Override
     public boolean isAlbum(String packageName) {
         String appType = getGodEyeAppType(packageName);
-        if (ALBUM.equals(appType)) {
-            return true;
-        }
-
-        return false;
+        return ALBUM.equals(appType);
     }
 
     @Override
     public boolean isBrowser(String packageName) {
         String appType = getGodEyeAppType(packageName);
-        if (BROWSER.equals(appType)) {
-            return true;
-        }
-
-        return false;
+        return BROWSER.equals(appType);
     }
 
     @Override
     public boolean isGame(String packageName) {
         String appType = getGodEyeAppType(packageName);
-        if (GAME.equals(appType)) {
-            return true;
-        }
-
-        return false;
+        return GAME.equals(appType);
     }
 
     @Override
     public boolean isIM(String packageName) {
         String appType = getGodEyeAppType(packageName);
-        if (IM.equals(appType)) {
-            return true;
-        }
-
-        return false;
+        return IM.equals(appType);
     }
 
     @Override
     public boolean isMusic(String packageName) {
         String appType = getGodEyeAppType(packageName);
-        if (MUSIC.equals(appType)) {
-            return true;
-        }
-
-        return false;
+        return MUSIC.equals(appType);
     }
 
     @Override
     public boolean isNews(String packageName) {
         String appType = getGodEyeAppType(packageName);
-        if (NEWS.equals(appType)) {
-            return true;
-        }
-
-        return false;
+        return NEWS.equals(appType);
     }
 
     @Override
     public boolean isReader(String packageName) {
         String appType = getGodEyeAppType(packageName);
-        if (READER.equals(appType)) {
-            return true;
-        }
-
-        return false;
+        return READER.equals(appType);
     }
 
     @Override
     public boolean isVideo(String packageName) {
         String appType = getGodEyeAppType(packageName);
-        if (VIDEO.equals(appType)) {
-            return true;
-        }
-
-        return false;
+        return VIDEO.equals(appType);
     }
 
 }

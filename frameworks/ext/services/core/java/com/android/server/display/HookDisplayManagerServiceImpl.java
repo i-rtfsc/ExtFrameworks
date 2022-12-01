@@ -45,7 +45,7 @@ public class HookDisplayManagerServiceImpl implements HookDisplayManagerService 
         if (mVrr == null) {
             this.mVrr = new VariableRefreshRateService(context);
             try {
-                mVrr.systemReady();
+                mVrr.publishBinderService();
             } catch (Exception e) {
                 JosLog.e(VRRManager.VRR_TAG, TAG, "vrr publish fail = " + e);
                 e.printStackTrace();

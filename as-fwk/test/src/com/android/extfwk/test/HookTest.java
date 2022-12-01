@@ -21,8 +21,15 @@ import android.content.Context;
 import system.ext.hook.Inject;
 
 public interface HookTest {
+
     static HookTest get() {
-        return (HookTest) Inject.getInstance().getInject(HookTest.class);
+        Object inject = Inject.getInstance().getInject(HookTest.class);
+        if (inject == null) {
+            return new HookTest() {
+            };
+        } else {
+            return (HookTest) inject;
+        }
     }
 
     default void test(Context context) {

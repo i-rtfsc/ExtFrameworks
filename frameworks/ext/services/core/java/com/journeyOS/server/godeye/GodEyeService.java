@@ -43,8 +43,8 @@ public class GodEyeService extends IGodEyeService.Stub {
         this.mContext = context;
     }
 
-    public void systemReady() {
-        JosLog.i(GodEyeManager.GOD_EYE_TAG, TAG, "systemReady");
+    public void publishBinderService() {
+        JosLog.i(GodEyeManager.GOD_EYE_TAG, TAG, "publish service");
         ServiceManager.addService(GodEyeManager.GOD_EYE_SERVICE, asBinder());
         mLocalService = new LocalGodEyeServiceImpl(mContext);
         LocalServices.addService(LocalGodEyeService.class, mLocalService);

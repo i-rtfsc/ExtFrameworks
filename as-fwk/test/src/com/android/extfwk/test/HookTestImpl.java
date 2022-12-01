@@ -22,7 +22,6 @@ import android.os.RemoteException;
 import com.journeyOS.server.godeye.GodEyeManager;
 import com.journeyOS.server.godeye.GodEyeObserver;
 import com.journeyOS.server.godeye.Scene;
-import com.journeyOS.server.godeye.monitor.MonitorManager;
 import com.journeyOS.server.vrr.VRRManager;
 import com.journeyOS.server.vrr.VrrInputMonitor;
 import com.journeyOS.server.vrr.VrrSurfaceControlProxy;
@@ -40,6 +39,10 @@ public class HookTestImpl implements HookTest {
     public void test(Context context) {
         JosLog.d(VRRManager.VRR_TAG, TAG, "test() called with: context = [" + context + "]");
 
+//        handler(context);
+    }
+
+    private void handler(Context context) {
         VrrInputMonitor.getDefault().startTouchMonitoring(context, VrrThread.getDefault().getLooper());
         VrrInputMonitor.getDefault().registerGestureEventListener(new VrrInputMonitor.OnGestureEvent() {
             @Override

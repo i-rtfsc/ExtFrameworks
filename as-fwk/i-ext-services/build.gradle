@@ -16,5 +16,6 @@ dependencies {
     compileOnly project(':i-ext-framework')
     if (!rootProject.ext.build_app.toBoolean()) {
         compileOnly project(':framework')
+        compileOnly project(':services')
     }
 }

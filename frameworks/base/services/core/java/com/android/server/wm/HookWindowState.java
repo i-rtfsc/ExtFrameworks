@@ -21,7 +21,13 @@ import system.ext.hook.Inject;
 public interface HookWindowState {
 
     static HookWindowState get() {
-        return (HookWindowState) Inject.getInstance().getInject(HookWindowState.class, null, true);
+        Object inject = Inject.getInstance().getInject(HookWindowState.class, null, true);
+        if (inject == null) {
+            return new HookWindowState() {
+            };
+        } else {
+            return (HookWindowState) inject;
+        }
     }
 
     default int getPid() {

@@ -67,6 +67,8 @@ public class VrrDumpCommand {
                 case POSITION_STATUS:
                     mArgStatus = Integer.parseInt(opt);
                     break;
+                default:
+                    break;
             }
 
         }

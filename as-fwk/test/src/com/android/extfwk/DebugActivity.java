@@ -113,9 +113,7 @@ public class DebugActivity extends Activity {
         return modes;
     }
 
-    //app set fps：
     private void setMode(Activity activity, Display.Mode mode) {
-        JosLog.d(VRRManager.VRR_TAG, TAG, "setMode() mode id = [" + mode.getModeId() + "], refresh rate = [" + mode.getRefreshRate() + "]");
         Window window = activity.getWindow();
         WindowManager.LayoutParams params = window.getAttributes();
         params.preferredDisplayModeId = mode.getModeId();

@@ -23,8 +23,6 @@ android {
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
-            //build error
-            //manifest.srcFile file("${rootDir}/AndroidManifest.xml")
             res.srcDirs = ['res']
             jniLibs.srcDirs = ['jniLibs']
 

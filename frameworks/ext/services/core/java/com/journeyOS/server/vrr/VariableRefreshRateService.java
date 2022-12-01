@@ -37,8 +37,8 @@ public class VariableRefreshRateService extends IVariableRefreshRateService.Stub
         this.mContext = context;
     }
 
-    public void systemReady() {
-        JosLog.i(VRRManager.VRR_TAG, TAG, "systemReady");
+    public void publishBinderService() {
+        JosLog.i(VRRManager.VRR_TAG, TAG, "publish service");
         ServiceManager.addService(VRRManager.VRR_SERVICE, asBinder());
         VrrPolicy.getDefault();
     }

@@ -86,7 +86,7 @@ public class Inject {
 
             Object inject = create(clsName, tClass.getClassLoader(), isSingleton);
             if (DEBUG) {
-                JosLog.d(TAG, "constructor impl class = [" + tClass + "]");
+                JosLog.d(TAG, "constructor impl class = [" + inject + "]");
             }
 
             if (inject != null && tClass.isAssignableFrom(inject.getClass())) {
