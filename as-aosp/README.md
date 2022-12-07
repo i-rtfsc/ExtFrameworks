@@ -1,7 +1,7 @@
 # as aosp
 
 ## 简介
-此as工程可以快速的导入aosp framework(java部分)、 aosp 系统app、 国内某些厂商扩展的fwk代码，比这个https://www.jianshu.com/p/2ba5d6bd461e方案还快，并且“联想”也很方便。
+此as工程可以快速的导入aosp framework(java部分)、 aosp 系统app、 国内某些厂商扩展的fwk代码，比这个 https://www.jianshu.com/p/2ba5d6bd461e 方案还快，并且“联想”也很方便。
 
 ## 警告
 关于此工程中包含miui、flyme、oppo、vivo等配置，只是一个空的gradle配置；该工程中不涉及到任何这几家公司的代码。
@@ -36,6 +36,7 @@ rootProject.ext.allModules.each { dependence -> compileOnly project(dependence.v
 
 ### aosp.gradle
 配置 aosp 的模块，比如framework、services、SystemUI、Settings等等。
+以及指定源码目录等。
 
 ext.gradle、miui.gradle、flyme.gradle、oppo.gradle、vivo.gradle同理。
 
